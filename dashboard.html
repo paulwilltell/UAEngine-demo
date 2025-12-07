@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UAEngine Live Dashboard - Real-Time Cognitive Analytics</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #0f172a;
+            --darker: #020617;
+            --light: #f8fafc;
+            --gray: #64748b;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            min-height: 100vh;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            background: var(--dark);
+            padding: 1.5rem;
+            border-right: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 2rem;
+        }
+        
+        .nav-section {
+            margin-bottom: 2rem;
+        }
+        
+        .nav-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gray);
+            margin-bottom: 0.75rem;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            color: var(--gray);
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 0.25rem;
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--light);
+        }
+        
+        .nav-item.active {
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--primary);
+        }
+        
+        /* Main Content */
+        .main {
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            font-size: 0.875rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--light);
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--dark);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 1.25rem;
+        }
+        
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+        }
+        
+        .stat-value.success { color: var(--secondary); }
+        .stat-value.warning { color: var(--warning); }
+        .stat-value.danger { color: var(--danger); }
+        .stat-value.primary { color: var(--primary); }
+        
+        .stat-change {
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+        }
+        
+        .stat-change.up { color: var(--secondary); }
+        .stat-change.down { color: var(--danger); }
+        
+        /* Main Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 1.5rem;
+        }
+        
+        .panel {
+            background: var(--dark);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .panel-header {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .panel-title {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .panel-body {
+            padding: 1.25rem;
+        }
+        
+        /* Live Input Section */
+        .input-section {
+            margin-bottom: 1.5rem;
+        }
+        
+        .input-box {
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            color: var(--light);
+            font-family: inherit;
+            font-size: 1rem;
+            resize: none;
+            min-height: 100px;
+        }
+        
+        .input-box:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .analyze-btn {
+            width: 100%;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .analyze-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        /* Feature Results */
+        .feature-results {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .feature-result {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        
+        .feature-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        
+        .feature-name {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .feature-badge {
+            font-size: 0.65rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 700;
+        }
+        
+        .badge-idle { background: rgba(100, 116, 139, 0.3); color: #94a3b8; }
+        .badge-light { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+        .badge-moderate { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+        .badge-heavy { background: rgba(249, 115, 22, 0.2); color: #f97316; }
+        .badge-critical { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+        .badge-overloaded { background: rgba(220, 38, 38, 0.3); color: #dc2626; }
+        
+        .feature-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            font-size: 0.8rem;
+        }
+        
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.4rem 0.6rem;
+            background: rgba(255,255,255,0.02);
+            border-radius: 4px;
+        }
+        
+        .detail-label { color: var(--gray); }
+        .detail-value { font-weight: 600; }
+        .detail-value.true { color: var(--danger); }
+        .detail-value.false { color: var(--gray); }
+        
+        /* Progress Bar */
+        .progress-bar {
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 0.75rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-fill.low { background: var(--secondary); }
+        .progress-fill.medium { background: var(--warning); }
+        .progress-fill.high { background: var(--danger); }
+        
+        /* ARM Morphs */
+        .morph-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+        
+        .morph-chip {
+            padding: 0.4rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.2s;
+        }
+        
+        .morph-chip.active {
+            background: rgba(99, 102, 241, 0.3);
+            border-color: var(--primary);
+            color: white;
+        }
+        
+        /* Predictions */
+        .predictions-list {
+            margin-top: 0.75rem;
+        }
+        
+        .prediction-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.6rem;
+            background: rgba(255,255,255,0.02);
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+        }
+        
+        .prediction-rank {
+            width: 24px;
+            height: 24px;
+            background: rgba(99, 102, 241, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .prediction-confidence {
+            margin-left: auto;
+            font-size: 0.7rem;
+            color: var(--secondary);
+        }
+        
+        /* Live Feed */
+        .feed-item {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .feed-item:last-child {
+            border-bottom: none;
+        }
+        
+        .feed-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        
+        .feed-time {
+            font-size: 0.75rem;
+            color: var(--gray);
+        }
+        
+        .feed-status {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+        }
+        
+        .feed-message {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+        }
+        
+        .feed-tags {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .feed-tag {
+            font-size: 0.65rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 3px;
+            background: rgba(255,255,255,0.05);
+        }
+        
+        /* Response area */
+        .response-section {
+            margin-top: 1.5rem;
+        }
+        
+        .response-box {
+            background: rgba(16, 185, 129, 0.05);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        
+        .response-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--secondary);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .response-text {
+            color: var(--light);
+            line-height: 1.6;
+        }
+        
+        /* Animation */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .live-indicator {
+            width: 8px;
+            height: 8px;
+            background: var(--secondary);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                display: none;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <aside class="sidebar">
+            <div class="logo">UAEngine</div>
+            
+            <div class="nav-section">
+                <div class="nav-title">Analytics</div>
+                <div class="nav-item active">📊 Live Dashboard</div>
+                <div class="nav-item">📈 Trends</div>
+                <div class="nav-item">🎯 Predictions</div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-title">Features</div>
+                <div class="nav-item">🔬 MEP Analysis</div>
+                <div class="nav-item">🧠 CLE Monitor</div>
+                <div class="nav-item">⏳ TSD Tracker</div>
+                <div class="nav-item">🔮 PIB Insights</div>
+                <div class="nav-item">🎭 ARM Config</div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-title">Settings</div>
+                <div class="nav-item">⚙️ Configuration</div>
+                <div class="nav-item">🔑 API Keys</div>
+                <div class="nav-item">📚 Documentation</div>
+            </div>
+        </aside>
+        
+        <main class="main">
+            <div class="header">
+                <h1>🧠 Live Cognitive Analysis</h1>
+                <div class="header-actions">
+                    <button class="btn btn-secondary">Export Data</button>
+                    <button class="btn btn-primary">+ New Session</button>
+                </div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Total Analyses</div>
+                    <div class="stat-value primary" id="totalAnalyses">1,247</div>
+                    <div class="stat-change up">↑ 12% from yesterday</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Frustration Detected</div>
+                    <div class="stat-value danger" id="frustrationCount">89</div>
+                    <div class="stat-change down">↓ 5% from yesterday</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Avg Cognitive Load</div>
+                    <div class="stat-value warning" id="avgLoad">0.42</div>
+                    <div class="stat-change up">↑ 3% from yesterday</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Prediction Accuracy</div>
+                    <div class="stat-value success" id="predictionAcc">87%</div>
+                    <div class="stat-change up">↑ 2% from yesterday</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Active Sessions</div>
+                    <div class="stat-value primary" id="activeSessions">34</div>
+                    <div class="stat-change up">↑ 8 now</div>
+                </div>
+            </div>
+            
+            <div class="content-grid">
+                <div class="panel">
+                    <div class="panel-header">
+                        <div class="panel-title"><div class="live-indicator"></div> Real-Time Analysis</div>
+                        <button class="btn btn-secondary" onclick="clearResults()">Clear</button>
+                    </div>
+                    <div class="panel-body">
+                        <div class="input-section">
+                            <textarea class="input-box" id="userInput" placeholder="Type or paste user input to analyze...
+
+Example: WHY DOESN'T THIS WORK??? I've tried everything and nothing helps!!!"
+                            >WHY DOESN'T THIS WORK??? I've tried everything and nothing helps!!!</textarea>
+                            <button class="analyze-btn" onclick="analyzeInput()">🔬 Analyze Cognitive Signals</button>
+                        </div>
+                        
+                        <div class="feature-results" id="results">
+                            <!-- Results will be injected here -->
+                        </div>
+                        
+                        <div class="response-section" id="responseSection" style="display: none;">
+                            <div class="response-box">
+                                <div class="response-label">🎭 Adaptive Response Preview</div>
+                                <div class="response-text" id="responseText"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="panel">
+                    <div class="panel-header">
+                        <div class="panel-title">📋 Recent Analyses</div>
+                        <span style="font-size: 0.75rem; color: var(--gray);">Last 24h</span>
+                    </div>
+                    <div class="panel-body" style="padding: 0; max-height: 600px; overflow-y: auto;">
+                        <div class="feed-item">
+                            <div class="feed-header">
+                                <span class="feed-time">2 min ago</span>
+                                <span class="feed-status badge-critical">Critical Load</span>
+                            </div>
+                            <div class="feed-message">"WHY IS THIS SO COMPLICATED???"</div>
+                            <div class="feed-tags">
+                                <span class="feed-tag">Frustrated</span>
+                                <span class="feed-tag">CLE: 0.89</span>
+                                <span class="feed-tag">tldr_expand</span>
+                            </div>
+                        </div>
+                        <div class="feed-item">
+                            <div class="feed-header">
+                                <span class="feed-time">5 min ago</span>
+                                <span class="feed-status badge-light">Light Load</span>
+                            </div>
+                            <div class="feed-message">"Can you explain how async/await works?"</div>
+                            <div class="feed-tags">
+                                <span class="feed-tag">Curious</span>
+                                <span class="feed-tag">CLE: 0.35</span>
+                                <span class="feed-tag">socratic</span>
+                            </div>
+                        </div>
+                        <div class="feed-item">
+                            <div class="feed-header">
+                                <span class="feed-time">12 min ago</span>
+                                <span class="feed-status badge-moderate">Moderate</span>
+                            </div>
+                            <div class="feed-message">"I think I understand but... what about edge cases?"</div>
+                            <div class="feed-tags">
+                                <span class="feed-tag">Uncertain</span>
+                                <span class="feed-tag">CLE: 0.52</span>
+                                <span class="feed-tag">narrative</span>
+                            </div>
+                        </div>
+                        <div class="feed-item">
+                            <div class="feed-header">
+                                <span class="feed-time">18 min ago</span>
+                                <span class="feed-status badge-idle">Idle</span>
+                            </div>
+                            <div class="feed-message">"Show me the code"</div>
+                            <div class="feed-tags">
+                                <span class="feed-tag">Expert</span>
+                                <span class="feed-tag">CLE: 0.18</span>
+                                <span class="feed-tag">code_first</span>
+                            </div>
+                        </div>
+                        <div class="feed-item">
+                            <div class="feed-header">
+                                <span class="feed-time">25 min ago</span>
+                                <span class="feed-status badge-heavy">Heavy</span>
+                            </div>
+                            <div class="feed-message">"Wait, I'm lost. Can we start over?"</div>
+                            <div class="feed-tags">
+                                <span class="feed-tag">Overwhelmed</span>
+                                <span class="feed-tag">CLE: 0.78</span>
+                                <span class="feed-tag">tldr_expand</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        function analyzeInput() {
+            const input = document.getElementById('userInput').value;
+            if (!input.trim()) return;
+            
+            // Simulate UAEngine analysis
+            const analysis = analyzeText(input);
+            displayResults(analysis);
+            
+            // Update stats
+            updateStats();
+        }
+        
+        function analyzeText(text) {
+            // MEP Analysis
+            const exclamations = (text.match(/!/g) || []).length;
+            const questions = (text.match(/\?/g) || []).length;
+            const capsRatio = (text.replace(/[^A-Z]/g, '').length / text.replace(/[^a-zA-Z]/g, '').length) || 0;
+            const hasQuestionCluster = /\?{2,}/.test(text);
+            const hasNegativeCaps = /\b(WHY|WHAT|HOW|DOESN.?T|WON.?T|CAN.?T|HELP|BROKEN|ERROR|FAIL|WRONG)/i.test(text);
+            const isFrustrated = hasQuestionCluster || (hasNegativeCaps && capsRatio > 0.3);
+            const isEnthusiastic = /!{2,}/.test(text) && !isFrustrated;
+            const isMultiQuestion = questions >= 2;
+            const isTrailingOff = /\.{3}|…|\.\.\s*$/.test(text);
+            
+            // CLE Calculation
+            let cognitiveLoad = 0.35; // baseline
+            if (isFrustrated) cognitiveLoad += 0.3;
+            if (capsRatio > 0.5) cognitiveLoad += 0.25;
+            if (isMultiQuestion) cognitiveLoad += 0.15;
+            if (isEnthusiastic) cognitiveLoad -= 0.1;
+            cognitiveLoad = Math.max(0, Math.min(1, cognitiveLoad));
+            
+            let loadLevel = 'idle';
+            if (cognitiveLoad < 0.25) loadLevel = 'idle';
+            else if (cognitiveLoad < 0.4) loadLevel = 'light';
+            else if (cognitiveLoad < 0.55) loadLevel = 'moderate';
+            else if (cognitiveLoad < 0.7) loadLevel = 'heavy';
+            else if (cognitiveLoad < 0.85) loadLevel = 'critical';
+            else loadLevel = 'overloaded';
+            
+            // ARM Selection
+            let activeMorph = 'balanced';
+            if (isFrustrated || loadLevel === 'overloaded') activeMorph = 'tldr_expand';
+            else if (isTrailingOff || text.match(/how|why|explain/i)) activeMorph = 'socratic';
+            else if (text.match(/show|code|example/i)) activeMorph = 'code_first';
+            else if (text.match(/list|steps|process/i)) activeMorph = 'bullet_storm';
+            else if (text.match(/deep|detail|thorough/i)) activeMorph = 'narrative';
+            
+            // PIB Predictions
+            const predictions = [];
+            if (isFrustrated) {
+                predictions.push({ text: "What is the error message?", confidence: 92 });
+                predictions.push({ text: "Show me the code", confidence: 85 });
+                predictions.push({ text: "Can we start from scratch?", confidence: 78 });
+            } else if (text.match(/how|why/i)) {
+                predictions.push({ text: "Can you give an example?", confidence: 88 });
+                predictions.push({ text: "What about edge cases?", confidence: 75 });
+                predictions.push({ text: "How does this compare to X?", confidence: 68 });
+            } else {
+                predictions.push({ text: "What's the next step?", confidence: 82 });
+                predictions.push({ text: "Can you explain more?", confidence: 71 });
+                predictions.push({ text: "Any best practices?", confidence: 65 });
+            }
+            
+            return {
+                mep: {
+                    exclamations,
+                    questions,
+                    capsRatio: Math.round(capsRatio * 100) / 100,
+                    isFrustrated,
+                    isEnthusiastic,
+                    isMultiQuestion,
+                    isTrailingOff
+                },
+                cle: {
+                    score: Math.round(cognitiveLoad * 100) / 100,
+                    level: loadLevel
+                },
+                arm: {
+                    activeMorph,
+                    morphs: ['bullet_storm', 'code_first', 'tldr_expand', 'socratic', 'checklist', 'narrative']
+                },
+                pib: {
+                    predictions
+                }
+            };
+        }
+        
+        function displayResults(analysis) {
+            const resultsDiv = document.getElementById('results');
+            
+            resultsDiv.innerHTML = `
+                <!-- MEP Results -->
+                <div class="feature-result">
+                    <div class="feature-header">
+                        <div class="feature-name">🔬 Micro-Expression Parser (MEP)</div>
+                    </div>
+                    <div class="feature-details">
+                        <div class="detail-item">
+                            <span class="detail-label">IsFrustrated</span>
+                            <span class="detail-value ${analysis.mep.isFrustrated}">${analysis.mep.isFrustrated}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">IsEnthusiastic</span>
+                            <span class="detail-value ${analysis.mep.isEnthusiastic}">${analysis.mep.isEnthusiastic}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">CapsRatio</span>
+                            <span class="detail-value">${analysis.mep.capsRatio}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Questions</span>
+                            <span class="detail-value">${analysis.mep.questions}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">IsMultiQuestion</span>
+                            <span class="detail-value ${analysis.mep.isMultiQuestion}">${analysis.mep.isMultiQuestion}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">IsTrailingOff</span>
+                            <span class="detail-value ${analysis.mep.isTrailingOff}">${analysis.mep.isTrailingOff}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- CLE Results -->
+                <div class="feature-result">
+                    <div class="feature-header">
+                        <div class="feature-name">🧠 Cognitive Load Estimator (CLE)</div>
+                        <span class="feature-badge badge-${analysis.cle.level}">${analysis.cle.level}</span>
+                    </div>
+                    <div class="feature-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Score</span>
+                            <span class="detail-value">${analysis.cle.score}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Level</span>
+                            <span class="detail-value">${analysis.cle.level}</span>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill ${analysis.cle.score < 0.4 ? 'low' : analysis.cle.score < 0.7 ? 'medium' : 'high'}" 
+                             style="width: ${analysis.cle.score * 100}%"></div>
+                    </div>
+                </div>
+                
+                <!-- ARM Results -->
+                <div class="feature-result">
+                    <div class="feature-header">
+                        <div class="feature-name">🎭 Adaptive Response Morphology (ARM)</div>
+                    </div>
+                    <div class="morph-options">
+                        ${analysis.arm.morphs.map(m => `
+                            <span class="morph-chip ${m === analysis.arm.activeMorph ? 'active' : ''}">${m}</span>
+                        `).join('')}
+                    </div>
+                </div>
+                
+                <!-- PIB Results -->
+                <div class="feature-result">
+                    <div class="feature-header">
+                        <div class="feature-name">🔮 Predictive Intent Branching (PIB)</div>
+                    </div>
+                    <div class="predictions-list">
+                        ${analysis.pib.predictions.map((p, i) => `
+                            <div class="prediction-item">
+                                <span class="prediction-rank">${i + 1}</span>
+                                <span>${p.text}</span>
+                                <span class="prediction-confidence">${p.confidence}%</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            // Show response section
+            const responseSection = document.getElementById('responseSection');
+            responseSection.style.display = 'block';
+            document.getElementById('responseText').innerHTML = generateResponse(analysis);
+        }
+        
+        function generateResponse(analysis) {
+            if (analysis.cle.level === 'overloaded' || analysis.mep.isFrustrated) {
+                return `<strong>🎯 Quick Answer:</strong> I can see you're hitting a wall. Let me give you the direct solution first, then we can dig into details if needed.
+                
+<br><br><strong>Here's what's likely happening:</strong> [Direct solution would go here]
+<br><br><em>Want me to walk through this step-by-step, or is the quick answer enough?</em>`;
+            } else if (analysis.arm.activeMorph === 'socratic') {
+                return `Great question! Let me help you think through this...
+<br><br>🤔 <strong>First, consider:</strong> What's the expected behavior vs. what you're seeing?
+<br><br>This approach will help us narrow down the issue together.`;
+            } else {
+                return `Based on your input, here's a balanced response that addresses your question directly while providing context for deeper understanding.`;
+            }
+        }
+        
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+            document.getElementById('responseSection').style.display = 'none';
+        }
+        
+        function updateStats() {
+            const totalEl = document.getElementById('totalAnalyses');
+            const current = parseInt(totalEl.textContent.replace(',', ''));
+            totalEl.textContent = (current + 1).toLocaleString();
+        }
+        
+        // Run initial analysis on load
+        window.onload = function() {
+            analyzeInput();
+        };
+    </script>
+</body>
+</html>

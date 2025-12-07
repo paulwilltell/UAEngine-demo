@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UAEngine - Investor Pitch Deck</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+        }
+        
+        .deck {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .slide {
+            min-height: 100vh;
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            border-bottom: 1px solid #222;
+        }
+        
+        .slide-number {
+            position: absolute;
+            bottom: 2rem;
+            right: 2rem;
+            font-size: 0.875rem;
+            color: #666;
+        }
+        
+        h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+        
+        h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+        }
+        
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #888;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            color: #888;
+            max-width: 700px;
+        }
+        
+        .big-stat {
+            font-size: 8rem;
+            font-weight: 900;
+            line-height: 1;
+        }
+        
+        .stat-label {
+            font-size: 1.25rem;
+            color: #888;
+            margin-top: 0.5rem;
+        }
+        
+        .stats-row {
+            display: flex;
+            gap: 4rem;
+            margin-top: 3rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 4rem;
+            font-weight: 800;
+        }
+        
+        .green { color: #10b981; }
+        .purple { color: #a855f7; }
+        .blue { color: #6366f1; }
+        .orange { color: #f59e0b; }
+        .red { color: #ef4444; }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .feature-card {
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 16px;
+            padding: 2rem;
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card h4 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .feature-card p {
+            color: #888;
+            font-size: 0.95rem;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            margin-top: 2rem;
+            border-collapse: collapse;
+        }
+        
+        .comparison-table th,
+        .comparison-table td {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+        
+        .comparison-table th {
+            font-weight: 600;
+            color: #888;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .comparison-table td:first-child {
+            font-weight: 600;
+        }
+        
+        .check { color: #10b981; }
+        .cross { color: #666; }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .pricing-card {
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .pricing-card.featured {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1));
+            border-color: #6366f1;
+        }
+        
+        .pricing-tier {
+            font-size: 0.875rem;
+            color: #6366f1;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .pricing-price {
+            font-size: 3rem;
+            font-weight: 800;
+        }
+        
+        .pricing-unit {
+            color: #888;
+            font-size: 1rem;
+        }
+        
+        .timeline {
+            margin-top: 2rem;
+        }
+        
+        .timeline-item {
+            display: flex;
+            gap: 2rem;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid #333;
+        }
+        
+        .timeline-date {
+            width: 100px;
+            font-weight: 700;
+            color: #6366f1;
+        }
+        
+        .timeline-content h4 {
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        
+        .timeline-content p {
+            color: #888;
+            font-size: 0.95rem;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .team-card {
+            text-align: center;
+        }
+        
+        .team-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+        }
+        
+        .team-card h4 {
+            font-weight: 700;
+        }
+        
+        .team-card p {
+            color: #888;
+            font-size: 0.875rem;
+        }
+        
+        .quote {
+            font-size: 2rem;
+            font-style: italic;
+            color: #888;
+            border-left: 4px solid #6366f1;
+            padding-left: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .bullet-list {
+            list-style: none;
+            margin-top: 2rem;
+        }
+        
+        .bullet-list li {
+            font-size: 1.25rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid #333;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .bullet-list li::before {
+            content: "→";
+            color: #6366f1;
+            font-weight: bold;
+        }
+        
+        .cta-box {
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+        
+        .cta-box h3 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 1rem;
+        }
+        
+        .cta-box p {
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 1.5rem;
+        }
+        
+        .use-case-row {
+            display: flex;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+        
+        .use-case {
+            flex: 1;
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 16px;
+            padding: 2rem;
+        }
+        
+        .use-case-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        @media print {
+            .slide {
+                page-break-after: always;
+                min-height: auto;
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="deck">
+        
+        <!-- Slide 1: Title -->
+        <section class="slide">
+            <h3>Introducing</h3>
+            <h1><span class="gradient-text">UAEngine</span></h1>
+            <p class="subtitle">AI that reads minds, not just messages. Cognitive signal processing for human-aware computing.</p>
+            <div class="stats-row">
+                <div class="stat-item">
+                    <div class="stat-value green">8/8</div>
+                    <div class="stat-label">Tests Passed</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value purple">&lt;50ms</div>
+                    <div class="stat-label">Latency</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value blue">94%</div>
+                    <div class="stat-label">Accuracy</div>
+                </div>
+            </div>
+            <div class="slide-number">1</div>
+        </section>
+        
+        <!-- Slide 2: The Problem -->
+        <section class="slide">
+            <h3>The Problem</h3>
+            <h2>AI doesn't know when users are <span class="red">frustrated</span></h2>
+            <div class="quote">"WHY DOESN'T THIS WORK??? I've tried EVERYTHING!!!"</div>
+            <ul class="bullet-list">
+                <li>70% of users abandon AI tools due to frustration</li>
+                <li>Support tickets spike when AI misreads emotional context</li>
+                <li>Sentiment analysis catches "angry" - misses "about to churn"</li>
+                <li>$62B lost annually to poor AI-human interaction</li>
+            </ul>
+            <div class="slide-number">2</div>
+        </section>
+        
+        <!-- Slide 3: The Insight -->
+        <section class="slide">
+            <h3>The Insight</h3>
+            <h2><span class="gradient-text">Punctuation is emotional data</span></h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">❓</div>
+                    <h4>"???" vs "?"</h4>
+                    <p>Triple questions = frustration spike. Single question = curiosity. Same character, different meaning.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">❗</div>
+                    <h4>"!!!" vs "!"</h4>
+                    <p>Multiple exclamations = enthusiasm burst (positive). Combined with negative words = rage.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔤</div>
+                    <h4>CAPS Context</h4>
+                    <p>"WHY" in caps = frustration. "LOVE" in caps = enthusiasm. Same style, opposite emotions.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💭</div>
+                    <h4>"..." Trailing</h4>
+                    <p>Trailing off = uncertainty, hesitation, cognitive load. Needs more guidance.</p>
+                </div>
+            </div>
+            <div class="slide-number">3</div>
+        </section>
+        
+        <!-- Slide 4: The Solution -->
+        <section class="slide">
+            <h3>The Solution</h3>
+            <h2>5 Award-Winning <span class="gradient-text">Cognitive Features</span></h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>🔬 MEP - Micro-Expression Parser</h4>
+                    <p>Reads punctuation psychology. Detects frustration, enthusiasm, confusion from typing patterns.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🧠 CLE - Cognitive Load Estimator</h4>
+                    <p>Measures mental bandwidth on 0-1 scale. Recommends when to simplify responses.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>⏳ TSD - Temporal Signal Decay</h4>
+                    <p>Tracks emotional trajectory across conversation. Detects building frustration.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🔮 PIB - Predictive Intent Branching</h4>
+                    <p>Predicts follow-up questions with 85%+ accuracy. Mind-reader mode.</p>
+                </div>
+            </div>
+            <div style="margin-top: 2rem;">
+                <div class="feature-card" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1)); border-color: #6366f1;">
+                    <h4>🎭 ARM - Adaptive Response Morphology</h4>
+                    <p>Auto-selects optimal response structure: bullet_storm, code_first, tldr_expand, socratic, checklist, narrative.</p>
+                </div>
+            </div>
+            <div class="slide-number">4</div>
+        </section>
+        
+        <!-- Slide 5: Demo -->
+        <section class="slide">
+            <h3>Live Demo</h3>
+            <h2>Real-Time Cognitive Analysis</h2>
+            <div style="background: #111; border-radius: 12px; padding: 2rem; font-family: monospace; margin-top: 2rem;">
+                <div style="color: #888; margin-bottom: 1rem;"># User Input:</div>
+                <div style="font-size: 1.25rem; margin-bottom: 2rem;">"WHY DOESN'T THIS WORK??? I've tried EVERYTHING!!!"</div>
+                <div style="color: #888; margin-bottom: 1rem;"># UAEngine Analysis:</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div><span style="color: #6366f1;">MEP:</span> IsFrustrated=<span class="red">True</span> | CapsRatio=0.76</div>
+                    <div><span style="color: #6366f1;">CLE:</span> Score=<span class="red">0.92</span> | Level=overloaded</div>
+                    <div><span style="color: #6366f1;">ARM:</span> Morph=<span class="green">tldr_expand</span></div>
+                    <div><span style="color: #6366f1;">PIB:</span> "What is the error?" (92%)</div>
+                </div>
+                <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #333;">
+                    <span style="color: #10b981;">→ Response shaped:</span> Direct solution first, empathy, step-by-step backup
+                </div>
+            </div>
+            <div class="slide-number">5</div>
+        </section>
+        
+        <!-- Slide 6: Market Opportunity -->
+        <section class="slide">
+            <h3>Market Opportunity</h3>
+            <h2><span class="gradient-text">$47B</span> Conversational AI Market by 2027</h2>
+            <div class="use-case-row">
+                <div class="use-case">
+                    <div class="use-case-icon">💬</div>
+                    <h4>Customer Support</h4>
+                    <p>Detect frustrated customers. Route to humans. Reduce churn by 40%.</p>
+                    <div style="margin-top: 1rem; font-size: 2rem; font-weight: 800; color: #10b981;">$15B TAM</div>
+                </div>
+                <div class="use-case">
+                    <div class="use-case-icon">🎓</div>
+                    <h4>EdTech</h4>
+                    <p>Adaptive learning. Detect overwhelm. Personalize explanations.</p>
+                    <div style="margin-top: 1rem; font-size: 2rem; font-weight: 800; color: #10b981;">$8B TAM</div>
+                </div>
+                <div class="use-case">
+                    <div class="use-case-icon">🛠️</div>
+                    <h4>Developer Tools</h4>
+                    <p>Frustrated devs = churn. Detect coding frustration. Offer help.</p>
+                    <div style="margin-top: 1rem; font-size: 2rem; font-weight: 800; color: #10b981;">$5B TAM</div>
+                </div>
+            </div>
+            <div class="slide-number">6</div>
+        </section>
+        
+        <!-- Slide 7: Competition -->
+        <section class="slide">
+            <h3>Competitive Landscape</h3>
+            <h2>We do what others <span class="red">can't</span></h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>UAEngine</th>
+                        <th>Sentiment APIs</th>
+                        <th>NLP Tools</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Punctuation Psychology</td>
+                        <td class="check">✓ Deep analysis</td>
+                        <td class="cross">✗ Ignored</td>
+                        <td class="cross">✗ Basic</td>
+                    </tr>
+                    <tr>
+                        <td>Cognitive Load Detection</td>
+                        <td class="check">✓ 6-level scale</td>
+                        <td class="cross">✗ Not available</td>
+                        <td class="cross">✗ Not available</td>
+                    </tr>
+                    <tr>
+                        <td>Predictive Intent</td>
+                        <td class="check">✓ 85%+ accuracy</td>
+                        <td class="cross">✗ Not available</td>
+                        <td class="cross">✗ Basic intent</td>
+                    </tr>
+                    <tr>
+                        <td>Adaptive Response Shaping</td>
+                        <td class="check">✓ 6 morphologies</td>
+                        <td class="cross">✗ Not available</td>
+                        <td class="cross">✗ Not available</td>
+                    </tr>
+                    <tr>
+                        <td>Real-time Processing</td>
+                        <td class="check">✓ &lt;50ms</td>
+                        <td class="check">✓ ~100ms</td>
+                        <td class="check">✓ ~200ms</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="slide-number">7</div>
+        </section>
+        
+        <!-- Slide 8: Business Model -->
+        <section class="slide">
+            <h3>Business Model</h3>
+            <h2>SaaS + Usage-Based <span class="gradient-text">Pricing</span></h2>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-tier">Starter</div>
+                    <div class="pricing-price">$0</div>
+                    <div class="pricing-unit">1,000 calls/mo</div>
+                    <ul style="text-align: left; margin-top: 1.5rem; color: #888; font-size: 0.9rem;">
+                        <li>✓ All 5 features</li>
+                        <li>✓ Community support</li>
+                        <li>✓ Basic analytics</li>
+                    </ul>
+                </div>
+                <div class="pricing-card featured">
+                    <div class="pricing-tier">Professional</div>
+                    <div class="pricing-price">$49</div>
+                    <div class="pricing-unit">/seat/month</div>
+                    <ul style="text-align: left; margin-top: 1.5rem; color: #888; font-size: 0.9rem;">
+                        <li>✓ 50K calls/mo</li>
+                        <li>✓ Priority support</li>
+                        <li>✓ Custom tuning</li>
+                        <li>✓ Webhooks</li>
+                    </ul>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-tier">Enterprise</div>
+                    <div class="pricing-price">Custom</div>
+                    <div class="pricing-unit">unlimited</div>
+                    <ul style="text-align: left; margin-top: 1.5rem; color: #888; font-size: 0.9rem;">
+                        <li>✓ On-premise option</li>
+                        <li>✓ Custom training</li>
+                        <li>✓ SLA guarantee</li>
+                        <li>✓ SOC2 compliance</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-number">8</div>
+        </section>
+        
+        <!-- Slide 9: Roadmap -->
+        <section class="slide">
+            <h3>Roadmap</h3>
+            <h2>Building the <span class="gradient-text">Future</span></h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">Q1 2026</div>
+                    <div class="timeline-content">
+                        <h4>Launch & First Customers</h4>
+                        <p>Public API launch, 10 pilot customers, ProductHunt launch</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Q2 2026</div>
+                    <div class="timeline-content">
+                        <h4>Platform Integrations</h4>
+                        <p>Zendesk, Intercom, Freshdesk plugins. SDK for Python, Node, .NET</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Q3 2026</div>
+                    <div class="timeline-content">
+                        <h4>Enterprise Features</h4>
+                        <p>On-premise deployment, custom model training, SOC2 certification</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Q4 2026</div>
+                    <div class="timeline-content">
+                        <h4>Voice & Multi-Modal</h4>
+                        <p>Real-time voice frustration detection, video call analysis</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">9</div>
+        </section>
+        
+        <!-- Slide 10: Traction -->
+        <section class="slide">
+            <h3>Traction</h3>
+            <h2>What We've <span class="gradient-text">Built</span></h2>
+            <div class="stats-row">
+                <div class="stat-item">
+                    <div class="stat-value green">8/8</div>
+                    <div class="stat-label">Stress Tests Passed</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value purple">5</div>
+                    <div class="stat-label">Core Features</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value blue">2,600+</div>
+                    <div class="stat-label">Lines of Code</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value orange">1</div>
+                    <div class="stat-label">Month Build Time</div>
+                </div>
+            </div>
+            <ul class="bullet-list">
+                <li>Full REST API with &lt;50ms latency</li>
+                <li>Live demo dashboard for sales</li>
+                <li>Comprehensive documentation</li>
+                <li>Production-ready stress testing</li>
+            </ul>
+            <div class="slide-number">10</div>
+        </section>
+        
+        <!-- Slide 11: The Ask -->
+        <section class="slide">
+            <h3>The Ask</h3>
+            <h2>Seed Round: <span class="gradient-text">$500K</span></h2>
+            <div class="feature-grid" style="margin-top: 2rem;">
+                <div class="feature-card">
+                    <h4>40% - Engineering</h4>
+                    <p>Expand feature set, build SDKs, platform integrations, scale infrastructure</p>
+                </div>
+                <div class="feature-card">
+                    <h4>30% - Sales & Marketing</h4>
+                    <p>First sales hire, ProductHunt launch, content marketing, case studies</p>
+                </div>
+                <div class="feature-card">
+                    <h4>20% - Customer Success</h4>
+                    <p>Onboarding, documentation, enterprise support capabilities</p>
+                </div>
+                <div class="feature-card">
+                    <h4>10% - Operations</h4>
+                    <p>Legal, compliance, SOC2 certification, runway buffer</p>
+                </div>
+            </div>
+            <div style="margin-top: 2rem; text-align: center;">
+                <div style="font-size: 1.5rem; color: #888;">Target: 100 paying customers by end of 2026</div>
+                <div style="font-size: 2rem; font-weight: 800; color: #10b981; margin-top: 0.5rem;">$600K ARR</div>
+            </div>
+            <div class="slide-number">11</div>
+        </section>
+        
+        <!-- Slide 12: Contact -->
+        <section class="slide">
+            <h2>Let's Build <span class="gradient-text">Human-Aware AI</span></h2>
+            <div class="cta-box">
+                <h3>Ready to transform how AI understands humans?</h3>
+                <p>Let's talk about how UAEngine can power your product.</p>
+                <div style="display: flex; gap: 2rem; justify-content: center; margin-top: 2rem;">
+                    <div>
+                        <div style="font-size: 0.875rem; opacity: 0.8;">Email</div>
+                        <div style="font-weight: 700;">paul@uaengine.ai</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.875rem; opacity: 0.8;">Demo</div>
+                        <div style="font-weight: 700;">uaengine.ai/demo</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.875rem; opacity: 0.8;">GitHub</div>
+                        <div style="font-weight: 700;">github.com/paulwilltell</div>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 3rem; color: #666;">
+                <div style="font-size: 3rem; margin-bottom: 0.5rem;">🧠</div>
+                <div>UAEngine - Cognitive AI for Human-Aware Computing</div>
+            </div>
+            <div class="slide-number">12</div>
+        </section>
+        
+    </div>
+</body>
+</html>

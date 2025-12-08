@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UAEngine - Checkout</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-glow: rgba(99, 102, 241, 0.4);
+            --accent: #22d3ee;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #030712;
+            --darker: #000000;
+            --surface: rgba(255, 255, 255, 0.02);
+            --surface-hover: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.08);
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --gradient-1: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+            --gradient-2: linear-gradient(135deg, #22d3ee 0%, #6366f1 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--darker);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        /* Header */
+        .header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-decoration: none;
+            color: var(--text);
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        
+        .back-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s;
+        }
+        
+        .back-link:hover {
+            color: var(--text);
+        }
+        
+        /* Main Layout */
+        .checkout-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 3rem;
+        }
+        
+        /* Left Column - Payment Form */
+        .payment-section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .section-subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+        }
+        
+        /* Plan Selector */
+        .plan-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .plan-option {
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .plan-option:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+        
+        .plan-option.selected {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.1);
+        }
+        
+        .plan-option.popular {
+            position: relative;
+        }
+        
+        .plan-option.popular::before {
+            content: "POPULAR";
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gradient-1);
+            padding: 0.2rem 0.75rem;
+            border-radius: 100px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .plan-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .plan-price {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        
+        .plan-price span {
+            font-size: 0.85rem;
+            font-weight: 400;
+            color: var(--text-muted);
+        }
+        
+        .plan-calls {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+        
+        /* Billing Cycle */
+        .billing-toggle {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            background: rgba(255,255,255,0.02);
+            padding: 0.5rem;
+            border-radius: 12px;
+        }
+        
+        .billing-option {
+            flex: 1;
+            padding: 0.75rem;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            color: var(--text-muted);
+        }
+        
+        .billing-option.selected {
+            background: var(--gradient-1);
+            color: white;
+        }
+        
+        .billing-option .savings {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--success);
+            margin-top: 0.25rem;
+        }
+        
+        /* Payment Methods */
+        .payment-methods {
+            margin-bottom: 2rem;
+        }
+        
+        .payment-methods-title {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+        
+        .payment-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+        
+        .payment-option {
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .payment-option:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+        
+        .payment-option.selected {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.1);
+        }
+        
+        .payment-icon {
+            width: 40px;
+            height: 28px;
+            background: white;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #000;
+        }
+        
+        .payment-icon.google { background: #fff; }
+        .payment-icon.apple { background: #000; color: #fff; }
+        .payment-icon.visa { background: linear-gradient(135deg, #1a1f71, #00579f); color: #fff; }
+        .payment-icon.installments { background: var(--gradient-1); color: #fff; font-size: 1rem; }
+        
+        .payment-label {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .payment-sublabel {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        /* Card Form */
+        .card-form {
+            display: none;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+        
+        .card-form.visible {
+            display: block;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+        
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+        
+        /* Installments Option */
+        .installments-section {
+            display: none;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+        
+        .installments-section.visible {
+            display: block;
+        }
+        
+        .installment-options {
+            display: grid;
+            gap: 0.75rem;
+        }
+        
+        .installment-option {
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .installment-option:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+        
+        .installment-option.selected {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.1);
+        }
+        
+        .installment-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .installment-months {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        .installment-desc {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        
+        .installment-amount {
+            font-weight: 700;
+            color: var(--success);
+        }
+        
+        /* Right Column - Order Summary */
+        .order-summary {
+            position: sticky;
+            top: 2rem;
+        }
+        
+        .summary-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+        }
+        
+        .summary-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .summary-item:last-of-type {
+            border-bottom: none;
+        }
+        
+        .summary-label {
+            color: var(--text-muted);
+        }
+        
+        .summary-value {
+            font-weight: 600;
+        }
+        
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            padding: 1.25rem 0;
+            margin-top: 0.5rem;
+            border-top: 2px solid var(--border);
+        }
+        
+        .total-label {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        .total-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .trial-notice {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+        
+        .trial-notice-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .trial-notice-text {
+            font-size: 0.9rem;
+            color: var(--success);
+            font-weight: 500;
+        }
+        
+        .trial-notice-subtext {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+        
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            padding: 1.25rem;
+            background: var(--gradient-1);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px var(--primary-glow);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* Security Notice */
+        .security-notice {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        
+        /* Features List */
+        .features-list {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+        
+        .features-title {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+            font-size: 0.9rem;
+        }
+        
+        .feature-check {
+            color: var(--success);
+            font-weight: bold;
+        }
+        
+        /* Responsive */
+        @media (max-width: 900px) {
+            .checkout-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .order-summary {
+                position: static;
+            }
+            
+            .plan-selector {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Loading State */
+        .loading {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .loading.visible {
+            display: flex;
+        }
+        
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Success Message */
+        .success-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .success-overlay.visible {
+            display: flex;
+        }
+        
+        .success-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 3rem;
+            text-align: center;
+            max-width: 500px;
+        }
+        
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .success-title {
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+        }
+        
+        .success-text {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+        
+        .success-btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--gradient-1);
+            border-radius: 12px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .success-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px var(--primary-glow);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="logo">
+            <div class="logo-icon">🧠</div>
+            UAEngine
+        </a>
+        <a href="index.html" class="back-link">← Back to Home</a>
+    </header>
+    
+    <div class="checkout-container">
+        <div class="payment-section">
+            <h1 class="section-title">Complete Your Subscription</h1>
+            <p class="section-subtitle">Choose your plan and payment method. Cancel anytime.</p>
+            
+            <!-- Plan Selector -->
+            <div class="plan-selector">
+                <div class="plan-option" data-plan="solo" data-price="29" data-calls="10,000">
+                    <div class="plan-name">Solo</div>
+                    <div class="plan-price">$29<span>/mo</span></div>
+                    <div class="plan-calls">10,000 calls/mo</div>
+                </div>
+                <div class="plan-option popular" data-plan="team" data-price="99" data-calls="100,000">
+                    <div class="plan-name">Team</div>
+                    <div class="plan-price">$99<span>/mo</span></div>
+                    <div class="plan-calls">100,000 calls/mo</div>
+                </div>
+                <div class="plan-option" data-plan="scale" data-price="499" data-calls="Unlimited">
+                    <div class="plan-name">Scale</div>
+                    <div class="plan-price">$499<span>/mo</span></div>
+                    <div class="plan-calls">Unlimited calls</div>
+                </div>
+            </div>
+            
+            <!-- Billing Cycle -->
+            <div class="billing-toggle">
+                <div class="billing-option selected" data-billing="monthly">
+                    Monthly
+                </div>
+                <div class="billing-option" data-billing="annual">
+                    Annual
+                    <span class="savings">Save 2 months!</span>
+                </div>
+            </div>
+            
+            <!-- Payment Methods -->
+            <div class="payment-methods">
+                <div class="payment-methods-title">Payment Method</div>
+                <div class="payment-options">
+                    <div class="payment-option" data-method="google">
+                        <div class="payment-icon google">
+                            <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                        </div>
+                        <div>
+                            <div class="payment-label">Google Pay</div>
+                            <div class="payment-sublabel">Fast & secure</div>
+                        </div>
+                    </div>
+                    <div class="payment-option" data-method="apple">
+                        <div class="payment-icon apple">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                        </div>
+                        <div>
+                            <div class="payment-label">Apple Pay</div>
+                            <div class="payment-sublabel">Touch ID / Face ID</div>
+                        </div>
+                    </div>
+                    <div class="payment-option" data-method="card">
+                        <div class="payment-icon visa">VISA</div>
+                        <div>
+                            <div class="payment-label">Credit / Debit Card</div>
+                            <div class="payment-sublabel">Visa, Mastercard, Amex</div>
+                        </div>
+                    </div>
+                    <div class="payment-option" data-method="installments">
+                        <div class="payment-icon installments">📅</div>
+                        <div>
+                            <div class="payment-label">Pay in Installments</div>
+                            <div class="payment-sublabel">Split into 3-12 payments</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Card Form (shown when card is selected) -->
+            <div class="card-form" id="cardForm">
+                <div class="form-group full">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-input" placeholder="you@example.com" id="email">
+                </div>
+                <div class="form-group full">
+                    <label class="form-label">Cardholder Name</label>
+                    <input type="text" class="form-input" placeholder="John Smith" id="cardName">
+                </div>
+                <div class="form-group full">
+                    <label class="form-label">Card Number</label>
+                    <input type="text" class="form-input" placeholder="1234 5678 9012 3456" id="cardNumber" maxlength="19">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Expiry Date</label>
+                        <input type="text" class="form-input" placeholder="MM/YY" id="expiry" maxlength="5">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">CVC</label>
+                        <input type="text" class="form-input" placeholder="123" id="cvc" maxlength="4">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Installments Section -->
+            <div class="installments-section" id="installmentsSection">
+                <div class="payment-methods-title">Choose Payment Schedule</div>
+                <div class="installment-options">
+                    <div class="installment-option" data-months="3">
+                        <div class="installment-info">
+                            <div class="installment-months">3 months</div>
+                            <div class="installment-desc">No interest</div>
+                        </div>
+                        <div class="installment-amount" id="install3"></div>
+                    </div>
+                    <div class="installment-option" data-months="6">
+                        <div class="installment-info">
+                            <div class="installment-months">6 months</div>
+                            <div class="installment-desc">No interest</div>
+                        </div>
+                        <div class="installment-amount" id="install6"></div>
+                    </div>
+                    <div class="installment-option" data-months="12">
+                        <div class="installment-info">
+                            <div class="installment-months">12 months</div>
+                            <div class="installment-desc">Low interest</div>
+                        </div>
+                        <div class="installment-amount" id="install12"></div>
+                    </div>
+                </div>
+                
+                <div class="form-group full" style="margin-top: 1.5rem;">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-input" placeholder="you@example.com" id="installEmail">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Order Summary -->
+        <div class="order-summary">
+            <div class="summary-card">
+                <h2 class="summary-title">Order Summary</h2>
+                
+                <div class="summary-item">
+                    <span class="summary-label">Plan</span>
+                    <span class="summary-value" id="summaryPlan">Solo</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">API Calls</span>
+                    <span class="summary-value" id="summaryCalls">10,000/mo</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Billing</span>
+                    <span class="summary-value" id="summaryBilling">Monthly</span>
+                </div>
+                <div class="summary-item" id="discountRow" style="display: none;">
+                    <span class="summary-label">Annual Discount</span>
+                    <span class="summary-value" style="color: var(--success);" id="summaryDiscount">-$58</span>
+                </div>
+                
+                <div class="trial-notice" id="trialNotice">
+                    <div class="trial-notice-icon">🎉</div>
+                    <div class="trial-notice-text">3-Day Free Trial Included!</div>
+                    <div class="trial-notice-subtext">You won't be charged until the trial ends</div>
+                </div>
+                
+                <div class="summary-total">
+                    <span class="total-label">Total Today</span>
+                    <span class="total-value" id="summaryTotal">$0.00</span>
+                </div>
+                <div style="text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-top: -0.5rem;">
+                    Then <span id="recurringPrice">$29/mo</span> after trial
+                </div>
+                
+                <button class="submit-btn" id="submitBtn" onclick="processPayment()">
+                    <span class="btn-text">Start Free Trial</span>
+                    <span class="loading" id="loadingSpinner">
+                        <div class="spinner"></div>
+                        Processing...
+                    </span>
+                </button>
+                
+                <div class="security-notice">
+                    🔒 Secured by 256-bit SSL encryption
+                </div>
+                
+                <div class="features-list">
+                    <div class="features-title">Included in your plan</div>
+                    <div class="feature-item">
+                        <span class="feature-check">✓</span>
+                        <span>All 5 signal analysis features</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-check">✓</span>
+                        <span>Real-time analytics dashboard</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-check">✓</span>
+                        <span>Cancel anytime, no questions</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-check">✓</span>
+                        <span id="memoryFeature">7-day conversation memory</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Success Overlay -->
+    <div class="success-overlay" id="successOverlay">
+        <div class="success-card">
+            <div class="success-icon">🎉</div>
+            <h2 class="success-title">Welcome to UAEngine!</h2>
+            <p class="success-text">Your 3-day free trial has started. We've sent your API keys and setup instructions to your email.</p>
+            <a href="dashboard.html" class="success-btn">Go to Dashboard →</a>
+        </div>
+    </div>
+    
+    <script>
+        // State
+        let selectedPlan = 'solo';
+        let selectedBilling = 'monthly';
+        let selectedPayment = null;
+        let selectedInstallments = null;
+        
+        const plans = {
+            solo: { price: 29, calls: '10,000', memory: '7-day' },
+            team: { price: 99, calls: '100,000', memory: '30-day' },
+            scale: { price: 499, calls: 'Unlimited', memory: '90-day' }
+        };
+        
+        // Initialize from URL params
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const plan = params.get('plan');
+            if (plan && plans[plan]) {
+                selectPlan(plan);
+            } else {
+                selectPlan('solo');
+            }
+        });
+        
+        // Plan Selection
+        document.querySelectorAll('.plan-option').forEach(el => {
+            el.addEventListener('click', () => selectPlan(el.dataset.plan));
+        });
+        
+        function selectPlan(plan) {
+            selectedPlan = plan;
+            document.querySelectorAll('.plan-option').forEach(el => {
+                el.classList.toggle('selected', el.dataset.plan === plan);
+            });
+            updateSummary();
+        }
+        
+        // Billing Toggle
+        document.querySelectorAll('.billing-option').forEach(el => {
+            el.addEventListener('click', () => {
+                selectedBilling = el.dataset.billing;
+                document.querySelectorAll('.billing-option').forEach(b => {
+                    b.classList.toggle('selected', b.dataset.billing === selectedBilling);
+                });
+                updateSummary();
+            });
+        });
+        
+        // Payment Method Selection
+        document.querySelectorAll('.payment-option').forEach(el => {
+            el.addEventListener('click', () => {
+                selectedPayment = el.dataset.method;
+                document.querySelectorAll('.payment-option').forEach(p => {
+                    p.classList.toggle('selected', p.dataset.method === selectedPayment);
+                });
+                
+                // Show/hide card form
+                document.getElementById('cardForm').classList.toggle('visible', selectedPayment === 'card');
+                
+                // Show/hide installments
+                document.getElementById('installmentsSection').classList.toggle('visible', selectedPayment === 'installments');
+                
+                updateSummary();
+            });
+        });
+        
+        // Installment Selection
+        document.querySelectorAll('.installment-option').forEach(el => {
+            el.addEventListener('click', () => {
+                selectedInstallments = parseInt(el.dataset.months);
+                document.querySelectorAll('.installment-option').forEach(i => {
+                    i.classList.toggle('selected', parseInt(i.dataset.months) === selectedInstallments);
+                });
+                updateSummary();
+            });
+        });
+        
+        // Update Summary
+        function updateSummary() {
+            const plan = plans[selectedPlan];
+            const basePrice = plan.price;
+            let totalPrice = basePrice;
+            let billingText = 'Monthly';
+            let discount = 0;
+            
+            if (selectedBilling === 'annual') {
+                discount = basePrice * 2; // 2 months free
+                totalPrice = (basePrice * 12) - discount;
+                billingText = 'Annual';
+            }
+            
+            // Update plan info
+            document.getElementById('summaryPlan').textContent = selectedPlan.charAt(0).toUpperCase() + selectedPlan.slice(1);
+            document.getElementById('summaryCalls').textContent = plan.calls + '/mo';
+            document.getElementById('summaryBilling').textContent = billingText;
+            document.getElementById('memoryFeature').textContent = plan.memory + ' conversation memory';
+            
+            // Update discount
+            const discountRow = document.getElementById('discountRow');
+            if (selectedBilling === 'annual') {
+                discountRow.style.display = 'flex';
+                document.getElementById('summaryDiscount').textContent = '-$' + discount;
+            } else {
+                discountRow.style.display = 'none';
+            }
+            
+            // Update trial notice
+            const trialNotice = document.getElementById('trialNotice');
+            if (selectedPlan === 'scale') {
+                trialNotice.style.display = 'none';
+                document.getElementById('summaryTotal').textContent = '$' + (selectedBilling === 'annual' ? totalPrice : basePrice) + (selectedBilling === 'annual' ? '/yr' : '/mo');
+                document.querySelector('.btn-text').textContent = 'Subscribe Now';
+                document.querySelector('[id="recurringPrice"]').parentElement.style.display = 'none';
+            } else {
+                trialNotice.style.display = 'block';
+                document.getElementById('summaryTotal').textContent = '$0.00';
+                document.querySelector('.btn-text').textContent = 'Start Free Trial';
+                document.querySelector('[id="recurringPrice"]').parentElement.style.display = 'block';
+                document.getElementById('recurringPrice').textContent = '$' + basePrice + (selectedBilling === 'annual' ? ' × 10 months' : '/mo');
+            }
+            
+            // Update installment amounts
+            if (selectedBilling === 'annual') {
+                document.getElementById('install3').textContent = '$' + Math.ceil(totalPrice / 3) + '/mo';
+                document.getElementById('install6').textContent = '$' + Math.ceil(totalPrice / 6) + '/mo';
+                document.getElementById('install12').textContent = '$' + Math.ceil((totalPrice * 1.05) / 12) + '/mo';
+            } else {
+                document.getElementById('install3').textContent = '$' + Math.ceil(basePrice / 3) + '/mo';
+                document.getElementById('install6').textContent = '$' + Math.ceil(basePrice / 6) + '/mo';
+                document.getElementById('install12').textContent = '$' + Math.ceil((basePrice * 1.05) / 12) + '/mo';
+            }
+        }
+        
+        // Card number formatting
+        document.getElementById('cardNumber')?.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\s/g, '').replace(/\D/g, '');
+            value = value.match(/.{1,4}/g)?.join(' ') || value;
+            e.target.value = value;
+        });
+        
+        // Expiry formatting
+        document.getElementById('expiry')?.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2);
+            }
+            e.target.value = value;
+        });
+        
+        // Process Payment
+        function processPayment() {
+            if (!selectedPayment) {
+                alert('Please select a payment method');
+                return;
+            }
+            
+            // Show loading
+            document.querySelector('.btn-text').style.display = 'none';
+            document.getElementById('loadingSpinner').classList.add('visible');
+            document.getElementById('submitBtn').disabled = true;
+            
+            // Simulate payment processing
+            setTimeout(() => {
+                // Hide loading, show success
+                document.getElementById('loadingSpinner').classList.remove('visible');
+                document.getElementById('successOverlay').classList.add('visible');
+            }, 2000);
+        }
+        
+        // Initialize
+        updateSummary();
+    </script>
+</body>
+</html>

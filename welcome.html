@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UAEngine - Welcome!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-glow: rgba(99, 102, 241, 0.4);
+            --accent: #22d3ee;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #030712;
+            --darker: #000000;
+            --surface: rgba(255, 255, 255, 0.02);
+            --surface-hover: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.08);
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --gradient-1: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+            --gradient-2: linear-gradient(135deg, #22d3ee 0%, #6366f1 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--darker);
+            color: var(--text);
+            min-height: 100vh;
+        }
+        
+        /* Confetti Animation */
+        .confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 100;
+        }
+        
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            top: -10px;
+            animation: confetti-fall 4s ease-out forwards;
+        }
+        
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Header */
+        .header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-decoration: none;
+            color: var(--text);
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        
+        /* Main Content */
+        .welcome-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+        
+        /* Success Hero */
+        .success-hero {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .success-icon {
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+            animation: bounce 0.6s ease;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        .success-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+        }
+        
+        .success-title .gradient-text {
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .success-subtitle {
+            color: var(--text-muted);
+            font-size: 1.15rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        /* Order Summary Card */
+        .order-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .order-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .order-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+        
+        .order-number {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        .order-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .order-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        
+        .order-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        
+        .order-value {
+            font-weight: 600;
+        }
+        
+        .trial-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            color: var(--success);
+            margin-top: 1.5rem;
+        }
+        
+        /* Quick Start Steps */
+        .quickstart-section {
+            margin-bottom: 2rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+        
+        .step-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            position: relative;
+            transition: all 0.3s;
+        }
+        
+        .step-card:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .step-number {
+            position: absolute;
+            top: -12px;
+            left: 1.5rem;
+            background: var(--gradient-1);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        
+        .step-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .step-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .step-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .step-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .step-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* API Key Section */
+        .api-key-section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .api-key-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        
+        .api-key-title {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .api-key-warning {
+            font-size: 0.8rem;
+            color: var(--warning);
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .api-key-box {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .api-key-value {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: var(--accent);
+        }
+        
+        .copy-btn {
+            background: var(--primary);
+            border: none;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            color: white;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .copy-btn:hover {
+            background: #5558e3;
+        }
+        
+        .copy-btn.copied {
+            background: var(--success);
+        }
+        
+        /* Code Sample */
+        .code-sample {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            overflow-x: auto;
+        }
+        
+        .code-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        
+        .code-lang {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .code-sample pre {
+            margin: 0;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--text);
+        }
+        
+        .code-sample .comment { color: #6b7280; }
+        .code-sample .keyword { color: #c084fc; }
+        .code-sample .string { color: #34d399; }
+        .code-sample .function { color: #60a5fa; }
+        
+        /* CTA Buttons */
+        .cta-section {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .cta-btn.primary {
+            background: var(--gradient-1);
+            color: white;
+        }
+        
+        .cta-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px var(--primary-glow);
+        }
+        
+        .cta-btn.secondary {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+        
+        .cta-btn.secondary:hover {
+            background: var(--surface-hover);
+        }
+        
+        /* Email Sent Notice */
+        .email-notice {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .email-icon {
+            font-size: 1.5rem;
+        }
+        
+        .email-text {
+            flex: 1;
+        }
+        
+        .email-text strong {
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+        
+        .email-text span {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        /* Data Notice */
+        .data-notice {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            margin-top: 2rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            font-size: 0.9rem;
+        }
+        
+        .data-notice-icon {
+            font-size: 1.25rem;
+        }
+        
+        .data-notice-text {
+            color: var(--text-muted);
+        }
+        
+        .data-notice-text strong {
+            color: var(--warning);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .order-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .cta-section {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Confetti -->
+    <div class="confetti" id="confetti"></div>
+    
+    <header class="header">
+        <a href="index.html" class="logo">
+            <div class="logo-icon">🧠</div>
+            UAEngine
+        </a>
+    </header>
+    
+    <div class="welcome-container">
+        <!-- Success Hero -->
+        <div class="success-hero">
+            <div class="success-icon">🎉</div>
+            <h1 class="success-title">Welcome to <span class="gradient-text">UAEngine</span>!</h1>
+            <p class="success-subtitle">Your account is ready. Let's make your AI understand users better.</p>
+        </div>
+        
+        <!-- Email Notice -->
+        <div class="email-notice">
+            <div class="email-icon">📧</div>
+            <div class="email-text">
+                <strong>Check your inbox</strong>
+                <span>We've sent your receipt and getting started guide to <strong id="userEmail">your email</strong></span>
+            </div>
+        </div>
+        
+        <!-- Order Summary -->
+        <div class="order-card">
+            <div class="order-header">
+                <h2 class="order-title">Order Confirmation</h2>
+                <span class="order-number">Order #<span id="orderNumber">UA-2024-XXXXX</span></span>
+            </div>
+            <div class="order-details">
+                <div class="order-item">
+                    <span class="order-label">Plan</span>
+                    <span class="order-value" id="planName">Solo</span>
+                </div>
+                <div class="order-item">
+                    <span class="order-label">API Calls</span>
+                    <span class="order-value" id="apiCalls">10,000/month</span>
+                </div>
+                <div class="order-item">
+                    <span class="order-label">Billing</span>
+                    <span class="order-value" id="billingCycle">Monthly</span>
+                </div>
+                <div class="order-item">
+                    <span class="order-label">Amount</span>
+                    <span class="order-value" id="amount">$29/mo</span>
+                </div>
+            </div>
+            <div class="trial-badge" id="trialBadge">
+                ✨ 3-Day Free Trial Active — You won't be charged until Dec 10, 2025
+            </div>
+        </div>
+        
+        <!-- API Key -->
+        <div class="api-key-section">
+            <div class="api-key-header">
+                <span class="api-key-title">🔑 Your API Key</span>
+                <span class="api-key-warning">⚠️ Save this now — shown only once</span>
+            </div>
+            <div class="api-key-box">
+                <span class="api-key-value" id="apiKey">ua_live_sk_7f8a9b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s</span>
+                <button class="copy-btn" onclick="copyApiKey()">
+                    <span id="copyText">📋 Copy</span>
+                </button>
+            </div>
+            
+            <div class="code-sample">
+                <div class="code-header">
+                    <span class="code-lang">Python — Quick Start</span>
+                    <button class="copy-btn" onclick="copyCode()" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">Copy</button>
+                </div>
+                <pre><span class="keyword">import</span> uaengine
+
+<span class="comment"># Initialize with your API key</span>
+client = uaengine.<span class="function">Client</span>(<span class="string">"ua_live_sk_..."</span>)
+
+<span class="comment"># Analyze a user message</span>
+result = client.<span class="function">analyze</span>(
+    message=<span class="string">"I've tried everything and nothing works!!"</span>
+)
+
+<span class="comment"># Get adaptation recommendations</span>
+<span class="keyword">print</span>(result.signals)      <span class="comment"># MEP, CLE, ARM scores</span>
+<span class="keyword">print</span>(result.adaptation)   <span class="comment"># Recommended response style</span></pre>
+            </div>
+        </div>
+        
+        <!-- Quick Start Steps -->
+        <div class="quickstart-section">
+            <h2 class="section-title">🚀 Get Started in 3 Steps</h2>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <span class="step-number">1</span>
+                    <div class="step-icon">📦</div>
+                    <h3 class="step-title">Install the SDK</h3>
+                    <p class="step-desc">Add UAEngine to your project with one command.</p>
+                    <a href="docs.html#installation" class="step-link">View installation guide →</a>
+                </div>
+                <div class="step-card">
+                    <span class="step-number">2</span>
+                    <div class="step-icon">⚙️</div>
+                    <h3 class="step-title">Configure Your App</h3>
+                    <p class="step-desc">Initialize the client with your API key.</p>
+                    <a href="docs.html#configuration" class="step-link">See configuration →</a>
+                </div>
+                <div class="step-card">
+                    <span class="step-number">3</span>
+                    <div class="step-icon">✨</div>
+                    <h3 class="step-title">Start Analyzing</h3>
+                    <p class="step-desc">Send messages and get signal analysis in real-time.</p>
+                    <a href="docs.html#quickstart" class="step-link">Try the quickstart →</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- CTA Buttons -->
+        <div class="cta-section">
+            <a href="dashboard.html" class="cta-btn primary">
+                Go to Dashboard →
+            </a>
+            <a href="docs.html" class="cta-btn secondary">
+                📚 Read Documentation
+            </a>
+        </div>
+        
+        <!-- Data Notice -->
+        <div class="data-notice">
+            <span class="data-notice-icon">💾</span>
+            <div class="data-notice-text">
+                <strong>Important:</strong> Your conversation history and saved configurations are retained only while your subscription is active. If your subscription expires, this data will be permanently deleted after 7 days.
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Generate confetti
+        function createConfetti() {
+            const confettiContainer = document.getElementById('confetti');
+            const colors = ['#6366f1', '#8b5cf6', '#a855f7', '#22d3ee', '#10b981', '#f59e0b'];
+            
+            for (let i = 0; i < 100; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                piece.style.left = Math.random() * 100 + '%';
+                piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                piece.style.animationDelay = Math.random() * 2 + 's';
+                piece.style.animationDuration = (3 + Math.random() * 2) + 's';
+                confettiContainer.appendChild(piece);
+            }
+            
+            // Remove confetti after animation
+            setTimeout(() => {
+                confettiContainer.innerHTML = '';
+            }, 5000);
+        }
+        
+        // Generate random order number
+        function generateOrderNumber() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let result = 'UA-' + new Date().getFullYear() + '-';
+            for (let i = 0; i < 5; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+        
+        // Generate random API key
+        function generateApiKey() {
+            const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+            let key = 'ua_live_sk_';
+            for (let i = 0; i < 32; i++) {
+                key += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return key;
+        }
+        
+        // Copy API key
+        function copyApiKey() {
+            const apiKey = document.getElementById('apiKey').textContent;
+            navigator.clipboard.writeText(apiKey);
+            
+            const btn = document.querySelector('.copy-btn');
+            const copyText = document.getElementById('copyText');
+            btn.classList.add('copied');
+            copyText.textContent = '✓ Copied!';
+            
+            setTimeout(() => {
+                btn.classList.remove('copied');
+                copyText.textContent = '📋 Copy';
+            }, 2000);
+        }
+        
+        // Copy code
+        function copyCode() {
+            const code = document.querySelector('.code-sample pre').textContent;
+            navigator.clipboard.writeText(code);
+            alert('Code copied to clipboard!');
+        }
+        
+        // Load data from URL params or session storage
+        document.addEventListener('DOMContentLoaded', () => {
+            createConfetti();
+            
+            const params = new URLSearchParams(window.location.search);
+            const signupData = JSON.parse(sessionStorage.getItem('uaengine_signup') || '{}');
+            
+            // Set order number
+            document.getElementById('orderNumber').textContent = generateOrderNumber();
+            
+            // Set API key
+            document.getElementById('apiKey').textContent = generateApiKey();
+            
+            // Set email
+            const email = params.get('email') || signupData.email || 'your email';
+            document.getElementById('userEmail').textContent = email;
+            
+            // Set plan details
+            const plan = params.get('plan') || signupData.plan || 'solo';
+            const plans = {
+                solo: { name: 'Solo', calls: '10,000/month', price: '$29/mo' },
+                team: { name: 'Team', calls: '100,000/month', price: '$99/seat/mo' },
+                scale: { name: 'Scale', calls: 'Unlimited', price: '$499+/mo' }
+            };
+            
+            const planInfo = plans[plan] || plans.solo;
+            document.getElementById('planName').textContent = planInfo.name;
+            document.getElementById('apiCalls').textContent = planInfo.calls;
+            document.getElementById('amount').textContent = planInfo.price;
+            
+            // Hide trial badge for Scale plan
+            if (plan === 'scale') {
+                document.getElementById('trialBadge').style.display = 'none';
+            }
+            
+            // Set billing
+            const billing = params.get('billing') || 'monthly';
+            document.getElementById('billingCycle').textContent = billing === 'annual' ? 'Annual' : 'Monthly';
+        });
+    </script>
+</body>
+</html>

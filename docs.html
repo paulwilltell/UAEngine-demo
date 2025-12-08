@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UAEngine - Documentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-glow: rgba(99, 102, 241, 0.4);
+            --accent: #22d3ee;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #030712;
+            --darker: #000000;
+            --surface: rgba(255, 255, 255, 0.02);
+            --surface-hover: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.08);
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --gradient-1: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+            --gradient-2: linear-gradient(135deg, #22d3ee 0%, #6366f1 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--darker);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.7;
+        }
+        
+        /* Layout */
+        .layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            background: var(--dark);
+            border-right: 1px solid var(--border);
+            padding: 1.5rem;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 800;
+            text-decoration: none;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+        }
+        
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--gradient-1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+        
+        /* Search */
+        .search-box {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 0.875rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+        
+        /* Nav */
+        .nav-section {
+            margin-bottom: 1.5rem;
+        }
+        
+        .nav-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+            padding-left: 0.75rem;
+        }
+        
+        .nav-item {
+            display: block;
+            padding: 0.6rem 0.75rem;
+            border-radius: 6px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            margin-bottom: 0.125rem;
+        }
+        
+        .nav-item:hover {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--text);
+        }
+        
+        .nav-item.active {
+            background: rgba(99, 102, 241, 0.15);
+            color: var(--primary);
+        }
+        
+        /* Main Content */
+        .main {
+            padding: 3rem 4rem;
+            max-width: 900px;
+        }
+        
+        /* Header */
+        .doc-header {
+            margin-bottom: 3rem;
+        }
+        
+        .doc-badge {
+            display: inline-block;
+            background: rgba(99, 102, 241, 0.15);
+            color: var(--primary);
+            padding: 0.35rem 0.75rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .doc-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+        }
+        
+        .doc-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+        }
+        
+        /* Sections */
+        .doc-section {
+            margin-bottom: 3rem;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            padding-top: 1rem;
+            scroll-margin-top: 2rem;
+        }
+        
+        h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+            scroll-margin-top: 2rem;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-muted);
+        }
+        
+        /* Code Blocks */
+        .code-block {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+        }
+        
+        .code-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            background: rgba(255,255,255,0.02);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .code-lang {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .copy-btn {
+            background: var(--primary);
+            border: none;
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            color: white;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .copy-btn:hover {
+            background: #5558e3;
+        }
+        
+        .code-content {
+            padding: 1.25rem;
+            overflow-x: auto;
+        }
+        
+        pre {
+            margin: 0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+        
+        code {
+            font-family: 'Fira Code', monospace;
+        }
+        
+        /* Syntax Highlighting */
+        .comment { color: #6b7280; font-style: italic; }
+        .keyword { color: #c084fc; }
+        .string { color: #34d399; }
+        .function { color: #60a5fa; }
+        .number { color: #f59e0b; }
+        .property { color: #22d3ee; }
+        
+        /* Inline Code */
+        p code, li code {
+            background: rgba(99, 102, 241, 0.15);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.875em;
+            color: var(--primary);
+        }
+        
+        /* Tables */
+        .doc-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        
+        .doc-table th,
+        .doc-table td {
+            padding: 0.875rem 1rem;
+            text-align: left;
+            border: 1px solid var(--border);
+        }
+        
+        .doc-table th {
+            background: rgba(255,255,255,0.02);
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        
+        .doc-table td {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        
+        /* Alerts */
+        .alert {
+            padding: 1rem 1.25rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            display: flex;
+            gap: 0.75rem;
+        }
+        
+        .alert-icon {
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+        
+        .alert-content {
+            flex: 1;
+        }
+        
+        .alert-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .alert-text {
+            font-size: 0.9rem;
+            color: inherit;
+            opacity: 0.9;
+        }
+        
+        .alert.info {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            color: var(--text);
+        }
+        
+        .alert.warning {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+        }
+        
+        .alert.success {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+        
+        /* Cards */
+        .feature-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .feature-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            transition: all 0.3s;
+        }
+        
+        .feature-card:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+        
+        .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .feature-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .feature-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        
+        /* Lists */
+        ul, ol {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-muted);
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Links */
+        a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Tabs */
+        .code-tabs {
+            display: flex;
+            gap: 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: -1px;
+        }
+        
+        .code-tab {
+            padding: 0.75rem 1rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        
+        .code-tab:hover {
+            color: var(--text);
+        }
+        
+        .code-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Support Card */
+        .support-card {
+            background: var(--gradient-1);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-top: 3rem;
+            text-align: center;
+        }
+        
+        .support-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .support-text {
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 1.5rem;
+        }
+        
+        .support-btn {
+            display: inline-block;
+            background: white;
+            color: var(--primary);
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .support-btn:hover {
+            transform: translateY(-2px);
+            text-decoration: none;
+        }
+        
+        /* Mobile */
+        @media (max-width: 1024px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+            
+            .main {
+                padding: 2rem;
+            }
+            
+            .feature-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">🧠</div>
+                UAEngine Docs
+            </a>
+            
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search-input" placeholder="Search docs...">
+            </div>
+            
+            <nav class="nav-section">
+                <div class="nav-title">Getting Started</div>
+                <a href="#quickstart" class="nav-item active">Quick Start</a>
+                <a href="#installation" class="nav-item">Installation</a>
+                <a href="#configuration" class="nav-item">Configuration</a>
+                <a href="#authentication" class="nav-item">Authentication</a>
+            </nav>
+            
+            <nav class="nav-section">
+                <div class="nav-title">Core Concepts</div>
+                <a href="#signals" class="nav-item">Signal Analysis</a>
+                <a href="#mep" class="nav-item">MEP Score</a>
+                <a href="#cle" class="nav-item">CLE Analysis</a>
+                <a href="#arm" class="nav-item">ARM Recommendations</a>
+            </nav>
+            
+            <nav class="nav-section">
+                <div class="nav-title">API Reference</div>
+                <a href="#analyze" class="nav-item">analyze()</a>
+                <a href="#batch" class="nav-item">analyze_batch()</a>
+                <a href="#webhooks" class="nav-item">Webhooks</a>
+                <a href="#errors" class="nav-item">Error Handling</a>
+            </nav>
+            
+            <nav class="nav-section">
+                <div class="nav-title">Resources</div>
+                <a href="#examples" class="nav-item">Examples</a>
+                <a href="#sdks" class="nav-item">SDKs</a>
+                <a href="#changelog" class="nav-item">Changelog</a>
+            </nav>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main">
+            <div class="doc-header">
+                <span class="doc-badge">v2.0</span>
+                <h1 class="doc-title">UAEngine Documentation</h1>
+                <p class="doc-subtitle">Everything you need to make your AI understand users better.</p>
+            </div>
+            
+            <!-- Quick Start -->
+            <section class="doc-section" id="quickstart">
+                <h2>🚀 Quick Start</h2>
+                <p>Get UAEngine running in your application in under 5 minutes.</p>
+                
+                <div class="feature-cards">
+                    <div class="feature-card">
+                        <div class="feature-icon">📦</div>
+                        <div class="feature-title">1. Install SDK</div>
+                        <div class="feature-desc">Add the UAEngine package to your project</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔑</div>
+                        <div class="feature-title">2. Get API Key</div>
+                        <div class="feature-desc">Create an account and copy your key</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚙️</div>
+                        <div class="feature-title">3. Initialize</div>
+                        <div class="feature-desc">Configure the client with your key</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">✨</div>
+                        <div class="feature-title">4. Analyze</div>
+                        <div class="feature-desc">Start getting signal analysis</div>
+                    </div>
+                </div>
+                
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="code-tabs">
+                            <div class="code-tab active" data-lang="python">Python</div>
+                            <div class="code-tab" data-lang="javascript">JavaScript</div>
+                            <div class="code-tab" data-lang="curl">cURL</div>
+                        </div>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <div class="code-content">
+                        <div class="tab-content active" data-lang="python">
+<pre><span class="keyword">import</span> uaengine
+
+<span class="comment"># Initialize client</span>
+client = uaengine.<span class="function">Client</span>(<span class="string">"ua_live_sk_your_api_key"</span>)
+
+<span class="comment"># Analyze a user message</span>
+result = client.<span class="function">analyze</span>(
+    message=<span class="string">"I've tried everything and nothing works!!"</span>
+)
+
+<span class="comment"># Access the signals</span>
+<span class="keyword">print</span>(result.mep)        <span class="comment"># 0.89 - High emotional intensity</span>
+<span class="keyword">print</span>(result.cle)        <span class="comment"># "overloaded" - User is overwhelmed</span>
+<span class="keyword">print</span>(result.arm)        <span class="comment"># "tldr_expand" - Give quick answer first</span>
+<span class="keyword">print</span>(result.adaptation) <span class="comment"># Full response recommendation</span></pre>
+                        </div>
+                        <div class="tab-content" data-lang="javascript">
+<pre><span class="keyword">import</span> UAEngine <span class="keyword">from</span> <span class="string">'uaengine'</span>;
+
+<span class="comment">// Initialize client</span>
+<span class="keyword">const</span> client = <span class="keyword">new</span> <span class="function">UAEngine</span>(<span class="string">'ua_live_sk_your_api_key'</span>);
+
+<span class="comment">// Analyze a user message</span>
+<span class="keyword">const</span> result = <span class="keyword">await</span> client.<span class="function">analyze</span>({
+    message: <span class="string">"I've tried everything and nothing works!!"</span>
+});
+
+<span class="comment">// Access the signals</span>
+console.<span class="function">log</span>(result.mep);        <span class="comment">// 0.89 - High emotional intensity</span>
+console.<span class="function">log</span>(result.cle);        <span class="comment">// "overloaded" - User is overwhelmed</span>
+console.<span class="function">log</span>(result.arm);        <span class="comment">// "tldr_expand" - Give quick answer first</span>
+console.<span class="function">log</span>(result.adaptation); <span class="comment">// Full response recommendation</span></pre>
+                        </div>
+                        <div class="tab-content" data-lang="curl">
+<pre>curl -X POST https://api.uaengine.ai/v2/analyze \
+  -H <span class="string">"Authorization: Bearer ua_live_sk_your_api_key"</span> \
+  -H <span class="string">"Content-Type: application/json"</span> \
+  -d <span class="string">'{
+    "message": "I'"'"'ve tried everything and nothing works!!"
+  }'</span></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Installation -->
+            <section class="doc-section" id="installation">
+                <h2>📦 Installation</h2>
+                <p>Install the UAEngine SDK for your preferred language.</p>
+                
+                <h3>Python</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">Terminal</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <div class="code-content">
+<pre>pip install uaengine</pre>
+                    </div>
+                </div>
+                
+                <h3>JavaScript / TypeScript</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">Terminal</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <div class="code-content">
+<pre>npm install uaengine
+<span class="comment"># or</span>
+yarn add uaengine</pre>
+                    </div>
+                </div>
+                
+                <div class="alert info">
+                    <span class="alert-icon">💡</span>
+                    <div class="alert-content">
+                        <div class="alert-title">Requirements</div>
+                        <div class="alert-text">Python 3.8+ or Node.js 16+ required. The SDK handles all API communication, authentication, and response parsing automatically.</div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Configuration -->
+            <section class="doc-section" id="configuration">
+                <h2>⚙️ Configuration</h2>
+                <p>Configure the UAEngine client with optional settings.</p>
+                
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <div class="code-content">
+<pre>client = uaengine.<span class="function">Client</span>(
+    api_key=<span class="string">"ua_live_sk_your_api_key"</span>,
+    
+    <span class="comment"># Optional configuration</span>
+    timeout=<span class="number">30</span>,           <span class="comment"># Request timeout in seconds</span>
+    max_retries=<span class="number">3</span>,        <span class="comment"># Retry failed requests</span>
+    base_url=<span class="string">"https://api.uaengine.ai"</span>,  <span class="comment"># Custom endpoint (enterprise)</span>
+)</pre>
+                    </div>
+                </div>
+                
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Option</th>
+                            <th>Type</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>api_key</code></td>
+                            <td>string</td>
+                            <td>Required</td>
+                            <td>Your UAEngine API key</td>
+                        </tr>
+                        <tr>
+                            <td><code>timeout</code></td>
+                            <td>int</td>
+                            <td>30</td>
+                            <td>Request timeout in seconds</td>
+                        </tr>
+                        <tr>
+                            <td><code>max_retries</code></td>
+                            <td>int</td>
+                            <td>3</td>
+                            <td>Number of retry attempts</td>
+                        </tr>
+                        <tr>
+                            <td><code>base_url</code></td>
+                            <td>string</td>
+                            <td>api.uaengine.ai</td>
+                            <td>API endpoint (for enterprise)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            
+            <!-- Signal Analysis -->
+            <section class="doc-section" id="signals">
+                <h2>📊 Signal Analysis</h2>
+                <p>UAEngine analyzes 5 distinct signals from user communication to help your AI respond more effectively.</p>
+                
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Signal</th>
+                            <th>Name</th>
+                            <th>What It Detects</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>MEP</code></td>
+                            <td>Message Emotional Profile</td>
+                            <td>Emotional intensity and sentiment (0.0 - 1.0)</td>
+                        </tr>
+                        <tr>
+                            <td><code>CLE</code></td>
+                            <td>Cognitive Load Estimation</td>
+                            <td>User's mental state (relaxed, focused, overloaded)</td>
+                        </tr>
+                        <tr>
+                            <td><code>ARM</code></td>
+                            <td>Adaptive Response Mode</td>
+                            <td>Recommended response style</td>
+                        </tr>
+                        <tr>
+                            <td><code>SIQ</code></td>
+                            <td>Session Intelligence Quotient</td>
+                            <td>Cross-message pattern analysis</td>
+                        </tr>
+                        <tr>
+                            <td><code>TLP</code></td>
+                            <td>Temporal Learning Profile</td>
+                            <td>Learning curve and comprehension speed</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            
+            <!-- MEP Score -->
+            <section class="doc-section" id="mep">
+                <h2>🎭 MEP Score</h2>
+                <p>The <strong>Message Emotional Profile</strong> score indicates the emotional intensity of a message on a scale from 0.0 to 1.0.</p>
+                
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Score Range</th>
+                            <th>Emotional State</th>
+                            <th>Recommended Approach</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>0.0 - 0.3</td>
+                            <td>Calm / Neutral</td>
+                            <td>Normal, informative responses</td>
+                        </tr>
+                        <tr>
+                            <td>0.3 - 0.6</td>
+                            <td>Engaged / Curious</td>
+                            <td>Detailed, enthusiastic responses</td>
+                        </tr>
+                        <tr>
+                            <td>0.6 - 0.8</td>
+                            <td>Frustrated / Concerned</td>
+                            <td>Empathetic, solution-focused</td>
+                        </tr>
+                        <tr>
+                            <td>0.8 - 1.0</td>
+                            <td>Highly Emotional</td>
+                            <td>Acknowledge feelings first, then assist</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">Example Response</span>
+                    </div>
+                    <div class="code-content">
+<pre>{
+  <span class="property">"mep"</span>: {
+    <span class="property">"score"</span>: <span class="number">0.87</span>,
+    <span class="property">"primary_emotion"</span>: <span class="string">"frustration"</span>,
+    <span class="property">"secondary_emotion"</span>: <span class="string">"confusion"</span>,
+    <span class="property">"confidence"</span>: <span class="number">0.94</span>
+  }
+}</pre>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- CLE Analysis -->
+            <section class="doc-section" id="cle">
+                <h2>🧠 CLE Analysis</h2>
+                <p>The <strong>Cognitive Load Estimation</strong> determines how much mental bandwidth a user has available.</p>
+                
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>State</th>
+                            <th>Indicators</th>
+                            <th>Response Strategy</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>relaxed</code></td>
+                            <td>Complete sentences, clear questions</td>
+                            <td>Full explanations welcome</td>
+                        </tr>
+                        <tr>
+                            <td><code>focused</code></td>
+                            <td>Specific questions, technical terms</td>
+                            <td>Precise, detailed answers</td>
+                        </tr>
+                        <tr>
+                            <td><code>distracted</code></td>
+                            <td>Typos, incomplete thoughts</td>
+                            <td>Clear, structured responses</td>
+                        </tr>
+                        <tr>
+                            <td><code>overloaded</code></td>
+                            <td>Fragmented messages, frustration</td>
+                            <td>Simple, step-by-step guidance</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            
+            <!-- ARM -->
+            <section class="doc-section" id="arm">
+                <h2>🎯 ARM Recommendations</h2>
+                <p>The <strong>Adaptive Response Mode</strong> suggests how to structure your AI's response.</p>
+                
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Mode</th>
+                            <th>When Used</th>
+                            <th>Response Pattern</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>tldr_expand</code></td>
+                            <td>User needs quick answer</td>
+                            <td>Answer first, details after</td>
+                        </tr>
+                        <tr>
+                            <td><code>step_by_step</code></td>
+                            <td>Complex task, user overwhelmed</td>
+                            <td>Numbered steps, one at a time</td>
+                        </tr>
+                        <tr>
+                            <td><code>deep_dive</code></td>
+                            <td>User wants to understand why</td>
+                            <td>Detailed explanation</td>
+                        </tr>
+                        <tr>
+                            <td><code>confirm_first</code></td>
+                            <td>Ambiguous request</td>
+                            <td>Clarify before proceeding</td>
+                        </tr>
+                        <tr>
+                            <td><code>empathize_solve</code></td>
+                            <td>Frustrated user</td>
+                            <td>Acknowledge, then solve</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            
+            <!-- Analyze API -->
+            <section class="doc-section" id="analyze">
+                <h2>📡 analyze()</h2>
+                <p>The core method for analyzing a single user message.</p>
+                
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <div class="code-content">
+<pre>result = client.<span class="function">analyze</span>(
+    message=<span class="string">"How do I implement OAuth?"</span>,
+    
+    <span class="comment"># Optional parameters</span>
+    context=<span class="string">"User is building a web app"</span>,
+    session_id=<span class="string">"user_123_session_456"</span>,
+    include_signals=[<span class="string">"mep"</span>, <span class="string">"cle"</span>, <span class="string">"arm"</span>]
+)</pre>
+                    </div>
+                </div>
+                
+                <h3>Parameters</h3>
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Required</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>message</code></td>
+                            <td>string</td>
+                            <td>Yes</td>
+                            <td>The user message to analyze</td>
+                        </tr>
+                        <tr>
+                            <td><code>context</code></td>
+                            <td>string</td>
+                            <td>No</td>
+                            <td>Additional context about the conversation</td>
+                        </tr>
+                        <tr>
+                            <td><code>session_id</code></td>
+                            <td>string</td>
+                            <td>No</td>
+                            <td>ID for multi-message session analysis</td>
+                        </tr>
+                        <tr>
+                            <td><code>include_signals</code></td>
+                            <td>array</td>
+                            <td>No</td>
+                            <td>Specific signals to return (default: all)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3>Response</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">JSON Response</span>
+                    </div>
+                    <div class="code-content">
+<pre>{
+  <span class="property">"id"</span>: <span class="string">"ana_abc123"</span>,
+  <span class="property">"message"</span>: <span class="string">"How do I implement OAuth?"</span>,
+  <span class="property">"mep"</span>: {
+    <span class="property">"score"</span>: <span class="number">0.35</span>,
+    <span class="property">"primary_emotion"</span>: <span class="string">"curiosity"</span>
+  },
+  <span class="property">"cle"</span>: <span class="string">"focused"</span>,
+  <span class="property">"arm"</span>: <span class="string">"step_by_step"</span>,
+  <span class="property">"adaptation"</span>: {
+    <span class="property">"tone"</span>: <span class="string">"technical"</span>,
+    <span class="property">"structure"</span>: <span class="string">"step_by_step"</span>,
+    <span class="property">"detail_level"</span>: <span class="string">"comprehensive"</span>
+  },
+  <span class="property">"timestamp"</span>: <span class="string">"2025-12-07T10:30:00Z"</span>
+}</pre>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Examples -->
+            <section class="doc-section" id="examples">
+                <h2>💡 Examples</h2>
+                
+                <h3>Customer Support Bot</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <div class="code-content">
+<pre><span class="keyword">def</span> <span class="function">handle_support_message</span>(user_message):
+    <span class="comment"># Analyze the message</span>
+    analysis = client.<span class="function">analyze</span>(message=user_message)
+    
+    <span class="comment"># Adapt response based on signals</span>
+    <span class="keyword">if</span> analysis.mep.score > <span class="number">0.7</span>:
+        <span class="comment"># User is frustrated - acknowledge first</span>
+        prefix = <span class="string">"I understand this is frustrating. Let me help you right away.\n\n"</span>
+    <span class="keyword">else</span>:
+        prefix = <span class="string">""</span>
+    
+    <span class="comment"># Generate response with AI</span>
+    response = generate_ai_response(
+        message=user_message,
+        tone=analysis.adaptation.tone,
+        structure=analysis.arm
+    )
+    
+    <span class="keyword">return</span> prefix + response</pre>
+                    </div>
+                </div>
+                
+                <h3>Educational Chatbot</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">Python</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <div class="code-content">
+<pre><span class="keyword">def</span> <span class="function">teach_concept</span>(question, session_id):
+    analysis = client.<span class="function">analyze</span>(
+        message=question,
+        session_id=session_id
+    )
+    
+    <span class="comment"># Adjust explanation depth based on CLE</span>
+    <span class="keyword">if</span> analysis.cle == <span class="string">"overloaded"</span>:
+        <span class="comment"># Simplify explanation</span>
+        <span class="keyword">return</span> generate_simple_explanation(question)
+    <span class="keyword">elif</span> analysis.cle == <span class="string">"focused"</span>:
+        <span class="comment"># User can handle more detail</span>
+        <span class="keyword">return</span> generate_detailed_explanation(question)</pre>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Support Card -->
+            <div class="support-card">
+                <h3 class="support-title">Need Help?</h3>
+                <p class="support-text">Our team is here to help you integrate UAEngine successfully.</p>
+                <a href="mailto:paultimchuk@outlook.com" class="support-btn">Contact Support</a>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        // Tab Switching
+        document.querySelectorAll('.code-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const lang = tab.dataset.lang;
+                const container = tab.closest('.code-block');
+                
+                // Update tabs
+                container.querySelectorAll('.code-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Update content
+                container.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                container.querySelector(`.tab-content[data-lang="${lang}"]`).classList.add('active');
+            });
+        });
+        
+        // Copy Code
+        function copyCode(btn) {
+            const codeBlock = btn.closest('.code-block');
+            const activeContent = codeBlock.querySelector('.tab-content.active') || codeBlock.querySelector('.code-content');
+            const code = activeContent.querySelector('pre').textContent;
+            
+            navigator.clipboard.writeText(code);
+            btn.textContent = 'Copied!';
+            setTimeout(() => btn.textContent = 'Copy', 2000);
+        }
+        
+        // Active nav item on scroll
+        const sections = document.querySelectorAll('.doc-section');
+        const navItems = document.querySelectorAll('.nav-item');
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href') === '#' + current) {
+                    item.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1036,11 +1036,14 @@
             document.getElementById('loadingSpinner').classList.add('visible');
             document.getElementById('submitBtn').disabled = true;
             
-            // Simulate payment processing
+            // Get email from form
+            const email = document.getElementById('email')?.value || 
+                          document.getElementById('installEmail')?.value || 
+                          new URLSearchParams(window.location.search).get('email') || '';
+            
+            // Simulate payment processing then redirect to welcome page
             setTimeout(() => {
-                // Hide loading, show success
-                document.getElementById('loadingSpinner').classList.remove('visible');
-                document.getElementById('successOverlay').classList.add('visible');
+                window.location.href = `welcome.html?plan=${selectedPlan}&billing=${selectedBilling}&email=${encodeURIComponent(email)}`;
             }, 2000);
         }
         

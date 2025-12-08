@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UAEngine - Account Settings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-glow: rgba(99, 102, 241, 0.4);
+            --accent: #22d3ee;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #030712;
+            --darker: #000000;
+            --surface: rgba(255, 255, 255, 0.02);
+            --surface-hover: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.08);
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --gradient-1: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+            --gradient-2: linear-gradient(135deg, #22d3ee 0%, #6366f1 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--darker);
+            color: var(--text);
+            min-height: 100vh;
+        }
+        
+        /* Layout */
+        .layout {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            background: var(--dark);
+            border-right: 1px solid var(--border);
+            padding: 1.5rem;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 800;
+            text-decoration: none;
+            color: var(--text);
+            margin-bottom: 2rem;
+        }
+        
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--gradient-1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+        
+        .nav-section {
+            margin-bottom: 2rem;
+        }
+        
+        .nav-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+            padding-left: 0.75rem;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            margin-bottom: 0.25rem;
+        }
+        
+        .nav-item:hover {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--text);
+        }
+        
+        .nav-item.active {
+            background: rgba(99, 102, 241, 0.15);
+            color: var(--primary);
+        }
+        
+        .nav-icon {
+            font-size: 1.1rem;
+        }
+        
+        /* Main Content */
+        .main {
+            padding: 2rem;
+            overflow-y: auto;
+        }
+        
+        .page-header {
+            margin-bottom: 2rem;
+        }
+        
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .page-subtitle {
+            color: var(--text-muted);
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0;
+        }
+        
+        .tab {
+            padding: 0.75rem 1.25rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            transition: all 0.2s;
+        }
+        
+        .tab:hover {
+            color: var(--text);
+        }
+        
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Cards */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+        
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .card-badge {
+            padding: 0.35rem 0.75rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .card-badge.active {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+        }
+        
+        .card-badge.trial {
+            background: rgba(99, 102, 241, 0.15);
+            color: var(--primary);
+        }
+        
+        /* Plan Card */
+        .plan-details {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .plan-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255,255,255,0.02);
+            border-radius: 12px;
+        }
+        
+        .plan-item-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        
+        .plan-item-value.highlight {
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .plan-item-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        
+        /* Usage Bar */
+        .usage-section {
+            margin-bottom: 1.5rem;
+        }
+        
+        .usage-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        
+        .usage-label {
+            font-size: 0.9rem;
+        }
+        
+        .usage-value {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        
+        .usage-bar {
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 100px;
+            overflow: hidden;
+        }
+        
+        .usage-fill {
+            height: 100%;
+            background: var(--gradient-1);
+            border-radius: 100px;
+            transition: width 0.5s ease;
+        }
+        
+        .usage-fill.warning {
+            background: var(--warning);
+        }
+        
+        .usage-fill.danger {
+            background: var(--danger);
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            border: none;
+        }
+        
+        .btn-primary {
+            background: var(--gradient-1);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 20px var(--primary-glow);
+        }
+        
+        .btn-secondary {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--surface-hover);
+        }
+        
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+        }
+        
+        .btn-danger:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 0.75rem;
+        }
+        
+        /* Form */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        /* Plan Selector */
+        .plan-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .plan-option {
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .plan-option:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+        
+        .plan-option.selected {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.1);
+        }
+        
+        .plan-option.current {
+            position: relative;
+        }
+        
+        .plan-option.current::before {
+            content: "CURRENT";
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--success);
+            padding: 0.2rem 0.5rem;
+            border-radius: 100px;
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .plan-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .plan-price {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        
+        .plan-price span {
+            font-size: 0.85rem;
+            font-weight: 400;
+            color: var(--text-muted);
+        }
+        
+        .plan-calls {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+        
+        /* Payment Methods */
+        .payment-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .payment-method {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+        }
+        
+        .payment-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .payment-icon {
+            width: 48px;
+            height: 32px;
+            background: white;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #1a1f71;
+        }
+        
+        .payment-details {
+            font-size: 0.9rem;
+        }
+        
+        .payment-details .label {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+        
+        .payment-default {
+            font-size: 0.75rem;
+            color: var(--success);
+            background: rgba(16, 185, 129, 0.1);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+        }
+        
+        /* Invoice Table */
+        .invoice-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .invoice-table th,
+        .invoice-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .invoice-table th {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        
+        .invoice-table td {
+            font-size: 0.9rem;
+        }
+        
+        .invoice-status {
+            display: inline-flex;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .invoice-status.paid {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+        }
+        
+        .invoice-status.pending {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+        }
+        
+        .invoice-link {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .invoice-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* Danger Zone */
+        .danger-zone {
+            background: rgba(239, 68, 68, 0.05);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+        
+        .danger-title {
+            color: var(--danger);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .danger-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-overlay.visible {
+            display: flex;
+        }
+        
+        .modal {
+            background: var(--dark);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+        }
+        
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .modal-desc {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: flex-end;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+            
+            .plan-details {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .plan-options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">🧠</div>
+                UAEngine
+            </a>
+            
+            <nav class="nav-section">
+                <div class="nav-title">Overview</div>
+                <a href="dashboard.html" class="nav-item">
+                    <span class="nav-icon">📊</span>
+                    Dashboard
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">📈</span>
+                    Analytics
+                </a>
+            </nav>
+            
+            <nav class="nav-section">
+                <div class="nav-title">Developer</div>
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">🔑</span>
+                    API Keys
+                </a>
+                <a href="docs.html" class="nav-item">
+                    <span class="nav-icon">📚</span>
+                    Documentation
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">🧪</span>
+                    Playground
+                </a>
+            </nav>
+            
+            <nav class="nav-section">
+                <div class="nav-title">Account</div>
+                <a href="account.html" class="nav-item active">
+                    <span class="nav-icon">⚙️</span>
+                    Settings
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">👥</span>
+                    Team
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">🎫</span>
+                    Support
+                </a>
+            </nav>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main">
+            <div class="page-header">
+                <h1 class="page-title">Account Settings</h1>
+                <p class="page-subtitle">Manage your subscription, billing, and account preferences</p>
+            </div>
+            
+            <!-- Tabs -->
+            <div class="tabs">
+                <div class="tab active" data-tab="subscription" onclick="switchTab('subscription')">Subscription</div>
+                <div class="tab" data-tab="billing" onclick="switchTab('billing')">Billing & Payments</div>
+                <div class="tab" data-tab="profile" onclick="switchTab('profile')">Profile</div>
+                <div class="tab" data-tab="security" onclick="switchTab('security')">Security</div>
+            </div>
+            
+            <!-- Subscription Tab -->
+            <div class="tab-content active" id="subscription">
+                <!-- Current Plan -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Current Plan</h2>
+                        <span class="card-badge trial">🎁 Trial Active</span>
+                    </div>
+                    
+                    <div class="plan-details">
+                        <div class="plan-item">
+                            <div class="plan-item-value highlight">Solo</div>
+                            <div class="plan-item-label">Plan</div>
+                        </div>
+                        <div class="plan-item">
+                            <div class="plan-item-value">$29</div>
+                            <div class="plan-item-label">Per Month</div>
+                        </div>
+                        <div class="plan-item">
+                            <div class="plan-item-value">10,000</div>
+                            <div class="plan-item-label">API Calls/mo</div>
+                        </div>
+                        <div class="plan-item">
+                            <div class="plan-item-value">2 days</div>
+                            <div class="plan-item-label">Trial Remaining</div>
+                        </div>
+                    </div>
+                    
+                    <div class="usage-section">
+                        <div class="usage-header">
+                            <span class="usage-label">API Usage This Period</span>
+                            <span class="usage-value">2,847 / 10,000 calls</span>
+                        </div>
+                        <div class="usage-bar">
+                            <div class="usage-fill" style="width: 28%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="showUpgradeModal()">⬆️ Upgrade Plan</button>
+                        <button class="btn btn-secondary">📊 View Usage Details</button>
+                    </div>
+                </div>
+                
+                <!-- Change Plan -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Change Plan</h2>
+                    </div>
+                    
+                    <div class="plan-options">
+                        <div class="plan-option current selected" data-plan="solo">
+                            <div class="plan-name">Solo</div>
+                            <div class="plan-price">$29<span>/mo</span></div>
+                            <div class="plan-calls">10,000 calls/mo</div>
+                        </div>
+                        <div class="plan-option" data-plan="team">
+                            <div class="plan-name">Team</div>
+                            <div class="plan-price">$99<span>/seat</span></div>
+                            <div class="plan-calls">100,000 calls/mo</div>
+                        </div>
+                        <div class="plan-option" data-plan="scale">
+                            <div class="plan-name">Scale</div>
+                            <div class="plan-price">$499<span>+/mo</span></div>
+                            <div class="plan-calls">Unlimited calls</div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary" disabled id="changePlanBtn">Change Plan</button>
+                </div>
+                
+                <!-- Data Retention Notice -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">📦 Data Retention</h2>
+                    </div>
+                    <p style="color: var(--text-muted); margin-bottom: 1rem;">
+                        Your conversation history, saved configurations, and analysis data are retained only while your subscription is active.
+                    </p>
+                    <ul style="color: var(--text-muted); padding-left: 1.5rem;">
+                        <li><strong>Solo:</strong> 7-day conversation memory</li>
+                        <li><strong>Team:</strong> 30-day conversation memory</li>
+                        <li><strong>Scale:</strong> 90-day conversation memory</li>
+                    </ul>
+                    <p style="color: var(--warning); margin-top: 1rem; font-size: 0.9rem;">
+                        ⚠️ If your subscription expires, data will be permanently deleted after 7 days.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Billing Tab -->
+            <div class="tab-content" id="billing">
+                <!-- Payment Methods -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Payment Methods</h2>
+                        <button class="btn btn-secondary" onclick="showAddPaymentModal()">+ Add Method</button>
+                    </div>
+                    
+                    <div class="payment-methods">
+                        <div class="payment-method">
+                            <div class="payment-info">
+                                <div class="payment-icon">VISA</div>
+                                <div class="payment-details">
+                                    <div>•••• •••• •••• 4242</div>
+                                    <div class="label">Expires 12/26</div>
+                                </div>
+                            </div>
+                            <span class="payment-default">Default</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Billing Info -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Billing Information</h2>
+                        <button class="btn btn-secondary">Edit</button>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Billing Email</label>
+                            <input type="email" class="form-input" value="billing@company.com" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Company Name (Optional)</label>
+                            <input type="text" class="form-input" value="Acme Inc." readonly>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Invoice History -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Invoice History</h2>
+                    </div>
+                    
+                    <table class="invoice-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Dec 7, 2025</td>
+                                <td>Solo Plan - Monthly</td>
+                                <td>$0.00</td>
+                                <td><span class="invoice-status paid">Trial</span></td>
+                                <td><a href="#" class="invoice-link">Download</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 1rem; text-align: center;">
+                        First invoice will be generated after trial ends
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Profile Tab -->
+            <div class="tab-content" id="profile">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Profile Information</h2>
+                    </div>
+                    
+                    <form>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">First Name</label>
+                                <input type="text" class="form-input" value="John">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Last Name</label>
+                                <input type="text" class="form-input" value="Smith">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-input" value="john@company.com">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Company (Optional)</label>
+                            <input type="text" class="form-input" value="Acme Inc.">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Timezone</label>
+                            <select class="form-input">
+                                <option>Pacific Time (PT)</option>
+                                <option>Mountain Time (MT)</option>
+                                <option>Central Time (CT)</option>
+                                <option selected>Eastern Time (ET)</option>
+                                <option>UTC</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-primary">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Security Tab -->
+            <div class="tab-content" id="security">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Change Password</h2>
+                    </div>
+                    
+                    <form>
+                        <div class="form-group">
+                            <label class="form-label">Current Password</label>
+                            <input type="password" class="form-input" placeholder="Enter current password">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">New Password</label>
+                            <input type="password" class="form-input" placeholder="Enter new password">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Confirm New Password</label>
+                            <input type="password" class="form-input" placeholder="Confirm new password">
+                        </div>
+                        <button type="button" class="btn btn-primary">Update Password</button>
+                    </form>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Two-Factor Authentication</h2>
+                        <span class="card-badge" style="background: rgba(239, 68, 68, 0.15); color: var(--danger);">Disabled</span>
+                    </div>
+                    <p style="color: var(--text-muted); margin-bottom: 1rem;">
+                        Add an extra layer of security to your account by enabling two-factor authentication.
+                    </p>
+                    <button class="btn btn-secondary">Enable 2FA</button>
+                </div>
+                
+                <!-- Danger Zone -->
+                <div class="danger-zone">
+                    <h3 class="danger-title">⚠️ Danger Zone</h3>
+                    <p class="danger-desc">
+                        Once you cancel your subscription, your data will be scheduled for deletion. This action cannot be undone.
+                    </p>
+                    <div class="btn-group">
+                        <button class="btn btn-danger" onclick="showCancelModal()">Cancel Subscription</button>
+                        <button class="btn btn-danger" onclick="showDeleteModal()">Delete Account</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Upgrade Modal -->
+    <div class="modal-overlay" id="upgradeModal">
+        <div class="modal">
+            <h2 class="modal-title">🚀 Upgrade Your Plan</h2>
+            <p class="modal-desc">You're about to upgrade to the Team plan at $99/seat/month. You'll get 100,000 API calls and priority support.</p>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="hideModal('upgradeModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="confirmUpgrade()">Confirm Upgrade</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Cancel Modal -->
+    <div class="modal-overlay" id="cancelModal">
+        <div class="modal">
+            <h2 class="modal-title">😢 Cancel Subscription?</h2>
+            <p class="modal-desc">We're sorry to see you go. Your subscription will remain active until the end of the current billing period. After that, your data will be deleted within 7 days.</p>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="hideModal('cancelModal')">Keep Subscription</button>
+                <button class="btn btn-danger" onclick="confirmCancel()">Cancel Subscription</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Delete Account Modal -->
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal">
+            <h2 class="modal-title">🗑️ Delete Account?</h2>
+            <p class="modal-desc">This will permanently delete your account, all data, API keys, and configurations. This action cannot be undone.</p>
+            <div class="form-group" style="margin-top: 1rem;">
+                <label class="form-label">Type "DELETE" to confirm</label>
+                <input type="text" class="form-input" id="deleteConfirm" placeholder="DELETE">
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="hideModal('deleteModal')">Cancel</button>
+                <button class="btn btn-danger" onclick="confirmDelete()">Delete Account</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Tab Switching
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            
+            document.querySelector(`.tab[data-tab="${tabId}"]`).classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+        
+        // Plan Selection
+        document.querySelectorAll('.plan-option').forEach(option => {
+            option.addEventListener('click', () => {
+                document.querySelectorAll('.plan-option').forEach(o => o.classList.remove('selected'));
+                option.classList.add('selected');
+                
+                const btn = document.getElementById('changePlanBtn');
+                btn.disabled = option.classList.contains('current');
+            });
+        });
+        
+        // Modals
+        function showUpgradeModal() {
+            document.getElementById('upgradeModal').classList.add('visible');
+        }
+        
+        function showCancelModal() {
+            document.getElementById('cancelModal').classList.add('visible');
+        }
+        
+        function showDeleteModal() {
+            document.getElementById('deleteModal').classList.add('visible');
+        }
+        
+        function showAddPaymentModal() {
+            alert('Add payment method modal would open here');
+        }
+        
+        function hideModal(modalId) {
+            document.getElementById(modalId).classList.remove('visible');
+        }
+        
+        function confirmUpgrade() {
+            alert('Plan upgraded! (Demo)');
+            hideModal('upgradeModal');
+        }
+        
+        function confirmCancel() {
+            alert('Subscription cancelled. (Demo)');
+            hideModal('cancelModal');
+        }
+        
+        function confirmDelete() {
+            const confirm = document.getElementById('deleteConfirm').value;
+            if (confirm === 'DELETE') {
+                alert('Account deleted. (Demo)');
+                window.location.href = 'index.html';
+            } else {
+                alert('Please type DELETE to confirm');
+            }
+        }
+    </script>
+</body>
+</html>

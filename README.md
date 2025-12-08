@@ -40,6 +40,26 @@ UAEngine is ideal for:
 
 ---
 
+## ✅ What UAEngine IS
+
+- A **signal-analysis layer** that interprets writing patterns (pacing, punctuation, structure, complexity)
+- A **prompt-shaping engine** that adapts how your AI responds based on detected signals
+- A **middleware component** that sits between user input and your LLM — no model retraining required
+- **Model-agnostic** — works with OpenAI, Anthropic, Google, local models, or any chat-completion API
+- A tool for **improving user experience**, not replacing human judgment
+
+## ❌ What UAEngine is NOT
+
+- **NOT emotion detection or psychological diagnosis** — we analyze writing patterns, not mental states
+- **NOT a replacement for your AI model** — it enhances how your model responds, not what it knows
+- **NOT production-ready infrastructure** — current demo is for evaluation and concept validation
+- **NOT mind-reading or sentiment analysis** — we don't claim to know how users "feel"
+- **NOT a medical, therapeutic, or clinical tool** — purely a UX/interaction optimization layer
+
+> UAEngine is about **communication intelligence**, not emotional intelligence. We help AI respond more appropriately to *how* users write — not diagnose *why* they write that way.
+
+---
+
 ## 📧 Contact
 
 **Paul Timchuk**  

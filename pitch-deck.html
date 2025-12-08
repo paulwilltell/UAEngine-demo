@@ -338,16 +338,45 @@
                 padding: 2rem;
             }
         }
+        
+        /* Demo Disclaimer Banner */
+        .demo-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
+            color: #000;
+            text-align: center;
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .demo-banner a {
+            color: #000;
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
-    <div class="deck">
+    <div class="demo-banner">
+        ⚠️ PITCH DECK PREVIEW — Concept presentation for evaluation. 
+        <a href="https://github.com/paulwilltell/UAEngine-demo" target="_blank">View on GitHub</a>
+    </div>
+    
+    <div class="deck" style="margin-top: 36px;">
         
         <!-- Slide 1: Title -->
         <section class="slide">
             <h3>Introducing</h3>
             <h1><span class="gradient-text">UAEngine</span></h1>
-            <p class="subtitle">AI that reads minds, not just messages. Cognitive signal processing for human-aware computing.</p>
+            <p class="subtitle">Adaptive interaction intelligence — communication signal processing for responsive AI.</p>
             <div class="stats-row">
                 <div class="stat-item">
                     <div class="stat-value green">8/8</div>

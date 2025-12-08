@@ -1116,9 +1116,250 @@
             z-index: 0;
             transition: opacity 0.3s;
         }
+        
+        /* Before/After Comparison Section */
+        .comparison-section {
+            padding: 6rem 2rem;
+            background: linear-gradient(180deg, transparent 0%, rgba(99, 102, 241, 0.02) 50%, transparent 100%);
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        
+        .comparison-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .comparison-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .comparison-card.before {
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+        
+        .comparison-card.after {
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+        
+        .comparison-header {
+            padding: 1rem 1.5rem;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .comparison-card.before .comparison-header {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+        
+        .comparison-card.after .comparison-header {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+        
+        .comparison-content {
+            padding: 1.5rem;
+        }
+        
+        .comparison-user {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .comparison-user-label {
+            font-size: 0.75rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .comparison-response {
+            background: rgba(255,255,255,0.02);
+            border-radius: 12px;
+            padding: 1rem;
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+        
+        .comparison-response-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .comparison-response.generic {
+            color: var(--text-muted);
+        }
+        
+        .comparison-response.adaptive {
+            color: var(--text);
+        }
+        
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Sample Scenarios Section */
+        .scenarios-section {
+            padding: 6rem 2rem;
+        }
+        
+        .scenarios-grid {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .scenario-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .scenario-card:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        .scenario-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem 1.5rem;
+            background: rgba(255,255,255,0.02);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .scenario-icon {
+            font-size: 1.5rem;
+        }
+        
+        .scenario-title {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        
+        .scenario-tag {
+            margin-left: auto;
+            background: var(--gradient-2);
+            padding: 0.25rem 0.75rem;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .scenario-body {
+            padding: 1.5rem;
+        }
+        
+        .scenario-message {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+        
+        .scenario-signals {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .signal-badge {
+            background: rgba(99, 102, 241, 0.15);
+            color: var(--accent);
+            padding: 0.25rem 0.75rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .scenario-adaptation {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 12px;
+            border-left: 3px solid #10b981;
+        }
+        
+        .adaptation-icon {
+            font-size: 1.25rem;
+        }
+        
+        .adaptation-text {
+            font-size: 0.9rem;
+            color: var(--text);
+            line-height: 1.6;
+            }
+        }
+        
+        /* Demo Disclaimer Banner */
+        .demo-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
+            color: #000;
+            text-align: center;
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .demo-banner a {
+            color: #000;
+            text-decoration: underline;
+        }
+        
+        .demo-banner-spacer {
+            height: 36px;
+        }
     </style>
 </head>
 <body>
+    <div class="demo-banner">
+        ⚠️ DEMO PREVIEW — This is a concept demonstration, not production software. 
+        <a href="https://github.com/paulwilltell/UAEngine-demo" target="_blank">View on GitHub</a>
+    </div>
+    <div class="demo-banner-spacer"></div>
+    
     <div class="grid-bg"></div>
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
@@ -1133,10 +1374,10 @@
             UAEngine
         </a>
         <ul class="nav-links">
+            <li><a href="#comparison">Before/After</a></li>
             <li><a href="#features">Features</a></li>
-            <li><a href="#how-it-works">How It Works</a></li>
+            <li><a href="#scenarios">Scenarios</a></li>
             <li><a href="#pricing">Pricing</a></li>
-            <li><a href="#use-cases">Use Cases</a></li>
         </ul>
         <a href="#pricing" class="nav-cta">Get Started →</a>
     </nav>
@@ -1189,6 +1430,81 @@
             <div class="stat">
                 <div class="stat-value">5</div>
                 <div class="stat-label">Features</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Before/After Comparison Section -->
+    <section class="comparison-section" id="comparison">
+        <div class="section-header">
+            <span class="section-label">The Difference</span>
+            <h2>See UAEngine <span class="gradient-text">In Action</span></h2>
+            <p>Same user message. Dramatically different AI response quality.</p>
+        </div>
+        
+        <div class="comparison-grid">
+            <div class="comparison-card before">
+                <div class="comparison-header">❌ Without UAEngine</div>
+                <div class="comparison-content">
+                    <div class="comparison-user">
+                        <div class="comparison-user-label">User says:</div>
+                        "WHY DOESN'T THIS WORK??? I've tried EVERYTHING and it still won't compile!!!"
+                    </div>
+                    <div class="comparison-response generic">
+                        <div class="comparison-response-label">Generic AI Response:</div>
+                        "There could be several reasons why your code isn't compiling. Common causes include syntax errors, missing dependencies, incorrect import statements, or version mismatches. Please check your code for any typos, ensure all required packages are installed, verify your compiler version, and review any error messages in your console. If you could share the specific error message or code snippet, I'd be happy to help you troubleshoot further."
+                    </div>
+                </div>
+            </div>
+            
+            <div class="comparison-card after">
+                <div class="comparison-header">✅ With UAEngine</div>
+                <div class="comparison-content">
+                    <div class="comparison-user">
+                        <div class="comparison-user-label">User says:</div>
+                        "WHY DOESN'T THIS WORK??? I've tried EVERYTHING and it still won't compile!!!"
+                    </div>
+                    <div class="comparison-response adaptive">
+                        <div class="comparison-response-label">Adaptive AI Response:</div>
+                        <strong>Quick answer first:</strong> Paste the exact error message — I'll pinpoint the fix immediately.<br><br>
+                        <em>While you grab that:</em> The most common culprits are missing semicolons, unmatched brackets, or a typo in a variable name. What language/framework are you using?
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="comparison-grid" style="margin-top: 2rem;">
+            <div class="comparison-card before">
+                <div class="comparison-header">❌ Without UAEngine</div>
+                <div class="comparison-content">
+                    <div class="comparison-user">
+                        <div class="comparison-user-label">User says:</div>
+                        "ok slow down... can you explain that again but simpler?"
+                    </div>
+                    <div class="comparison-response generic">
+                        <div class="comparison-response-label">Generic AI Response:</div>
+                        "Certainly! Let me explain the concept again. The algorithm works by iterating through each element in the array and comparing it to adjacent elements. During each iteration, if the current element is greater than the next element, they are swapped. This process continues until no more swaps are needed, indicating that the array is sorted. The time complexity is O(n²) in the worst case..."
+                    </div>
+                </div>
+            </div>
+            
+            <div class="comparison-card after">
+                <div class="comparison-header">✅ With UAEngine</div>
+                <div class="comparison-content">
+                    <div class="comparison-user">
+                        <div class="comparison-user-label">User says:</div>
+                        "ok slow down... can you explain that again but simpler?"
+                    </div>
+                    <div class="comparison-response adaptive">
+                        <div class="comparison-response-label">Adaptive AI Response:</div>
+                        <strong>Think of it like sorting a deck of cards:</strong><br><br>
+                        1. Look at the first two cards<br>
+                        2. If they're in wrong order, swap them<br>
+                        3. Move to the next pair<br>
+                        4. Repeat until everything's in order<br><br>
+                        <em>Want me to walk through an example with actual numbers?</em>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -1386,12 +1702,138 @@
         </div>
     </section>
     
+    <!-- Sample Scenarios Section -->
+    <section class="scenarios-section" id="scenarios">
+        <div class="section-header">
+            <span class="section-label">Real-World Examples</span>
+            <h2>5 Scenarios, <span class="gradient-text">5 Adaptations</span></h2>
+            <p>Watch how UAEngine detects signals and adapts responses across different user contexts</p>
+        </div>
+        
+        <div class="scenarios-grid">
+            <!-- Scenario 1: Frustrated Developer -->
+            <div class="scenario-card">
+                <div class="scenario-header">
+                    <span class="scenario-icon">😤</span>
+                    <span class="scenario-title">Frustrated Developer</span>
+                    <span class="scenario-tag">High Urgency</span>
+                </div>
+                <div class="scenario-body">
+                    <div class="scenario-message">
+                        "I GIVE UP. This stupid function returns undefined every single time no matter what I do!!!"
+                    </div>
+                    <div class="scenario-signals">
+                        <span class="signal-badge">MEP: Frustration 0.94</span>
+                        <span class="signal-badge">CLE: Overloaded</span>
+                        <span class="signal-badge">ARM: tldr_expand</span>
+                    </div>
+                    <div class="scenario-adaptation">
+                        <span class="adaptation-icon">✨</span>
+                        <span class="adaptation-text"><strong>UAEngine adapts:</strong> Lead with the most likely fix immediately. Skip lengthy explanations. Offer to debug step-by-step only if first fix doesn't work.</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Scenario 2: Curious Beginner -->
+            <div class="scenario-card">
+                <div class="scenario-header">
+                    <span class="scenario-icon">🤔</span>
+                    <span class="scenario-title">Curious Beginner</span>
+                    <span class="scenario-tag">Learning Mode</span>
+                </div>
+                <div class="scenario-body">
+                    <div class="scenario-message">
+                        "hey so i just started coding... what even is an API? like what does it actually do?"
+                    </div>
+                    <div class="scenario-signals">
+                        <span class="signal-badge">MEP: Curiosity 0.82</span>
+                        <span class="signal-badge">CLE: Low Load</span>
+                        <span class="signal-badge">ARM: narrative</span>
+                    </div>
+                    <div class="scenario-adaptation">
+                        <span class="adaptation-icon">✨</span>
+                        <span class="adaptation-text"><strong>UAEngine adapts:</strong> Use analogies and everyday examples. Avoid jargon. Build understanding gradually. Offer to go deeper only if interest signals continue.</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Scenario 3: Expert in a Rush -->
+            <div class="scenario-card">
+                <div class="scenario-header">
+                    <span class="scenario-icon">⚡</span>
+                    <span class="scenario-title">Expert in a Rush</span>
+                    <span class="scenario-tag">Speed Priority</span>
+                </div>
+                <div class="scenario-body">
+                    <div class="scenario-message">
+                        "k8s pod crashloopbackoff - OOMKilled. mem limits set to 512Mi. quick fix?"
+                    </div>
+                    <div class="scenario-signals">
+                        <span class="signal-badge">MEP: Expert Shorthand</span>
+                        <span class="signal-badge">CLE: Focused</span>
+                        <span class="signal-badge">ARM: code_first</span>
+                    </div>
+                    <div class="scenario-adaptation">
+                        <span class="adaptation-icon">✨</span>
+                        <span class="adaptation-text"><strong>UAEngine adapts:</strong> Skip basics entirely. Provide the exact command/config fix. Assume deep technical knowledge. Keep response under 3 lines.</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Scenario 4: Overwhelmed User -->
+            <div class="scenario-card">
+                <div class="scenario-header">
+                    <span class="scenario-icon">😵</span>
+                    <span class="scenario-title">Overwhelmed User</span>
+                    <span class="scenario-tag">Simplify</span>
+                </div>
+                <div class="scenario-body">
+                    <div class="scenario-message">
+                        "wait wait wait... ok so there's components and props and state and hooks and context and... I'm lost. can we just focus on one thing?"
+                    </div>
+                    <div class="scenario-signals">
+                        <span class="signal-badge">MEP: Confusion 0.88</span>
+                        <span class="signal-badge">CLE: Overloaded 0.95</span>
+                        <span class="signal-badge">ARM: checklist</span>
+                    </div>
+                    <div class="scenario-adaptation">
+                        <span class="adaptation-icon">✨</span>
+                        <span class="adaptation-text"><strong>UAEngine adapts:</strong> Acknowledge the overwhelm. Pick ONE concept to explain. Use numbered steps. Explicitly pause for confirmation before adding more.</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Scenario 5: Skeptical Evaluator -->
+            <div class="scenario-card">
+                <div class="scenario-header">
+                    <span class="scenario-icon">🧐</span>
+                    <span class="scenario-title">Skeptical Evaluator</span>
+                    <span class="scenario-tag">Prove It</span>
+                </div>
+                <div class="scenario-body">
+                    <div class="scenario-message">
+                        "Interesting claims. What's your actual accuracy rate? How does this compare to existing solutions? Show me benchmarks."
+                    </div>
+                    <div class="scenario-signals">
+                        <span class="signal-badge">MEP: Analytical 0.91</span>
+                        <span class="signal-badge">PIB: Wants data</span>
+                        <span class="signal-badge">ARM: structured</span>
+                    </div>
+                    <div class="scenario-adaptation">
+                        <span class="adaptation-icon">✨</span>
+                        <span class="adaptation-text"><strong>UAEngine adapts:</strong> Lead with specific numbers and data. Use tables/comparisons. Cite sources. Acknowledge limitations honestly. No fluff.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
     <section class="cta-section">
         <h2>Ready to Build AI<br>That <span class="gradient-text">Truly Adapts</span>?</h2>
         <p>Join developers building the next generation of communication-aware AI.</p>
         <div class="hero-ctas">
             <a href="#pricing" class="btn btn-primary">Start 3-Day Trial →</a>
-            <a href="mailto:paul@uaengine.ai" class="btn btn-secondary">Talk to Founder</a>
+            <a href="mailto:paultimchuk@outlook.com" class="btn btn-secondary">Talk to Founder</a>
         </div>
     </section>
     
@@ -1419,7 +1861,7 @@
                     <li><a href="#">About</a></li>
                     <li><a href="#">Blog</a></li>
                     <li><a href="#">Careers</a></li>
-                    <li><a href="mailto:paul@uaengine.ai">Contact</a></li>
+                    <li><a href="mailto:paultimchuk@outlook.com">Contact</a></li>
                 </ul>
             </div>
             <div class="footer-links">
